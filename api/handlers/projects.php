@@ -38,7 +38,6 @@ class Projects {
 
 	public function Delete($f3, $params) {
 		$data = array();
-
 		$project = $f3->get('project')->load(array('@id=?', $f3->get('REQUEST.project_id')));
 		if ($project->dry()) {
 			$data['result'] = false;
@@ -49,7 +48,7 @@ class Projects {
 			$data['result'] = true;
 		}
 
-		return json_encode($data);
+		echo json_encode($data);
 	}
 } 
 ?>

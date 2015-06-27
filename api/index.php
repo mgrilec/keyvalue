@@ -16,7 +16,7 @@ $f3->set('project', new DB\Jig\Mapper($db, 'projects'));
 $f3->set('key', new DB\Jig\Mapper($db, 'keys'));
 
 // autoload
-$f3->set('AUTOLOAD', 'handlers/; tests/');
+$f3->set('AUTOLOAD', 'handlers/');
 
 function project_exists($f3, $project_id) {
 	return $f3->get('project')->count(array('@id=?', $project_id)) > 0;
@@ -96,7 +96,10 @@ $f3->route('GET /test',
 		$f3->set('results', array());
 
 		// run tests
-		include('test.php');
+		foreach (glob("tests/*.php") as $filename)
+		{
+		    include $filename;
+		}
 		
 		// display results
 		$template = new Template;
