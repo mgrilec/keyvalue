@@ -6,8 +6,8 @@ $f3 = require("include/fatfree/lib/base.php");
 require("include/optimus.php");
 $f3->set('optimus', new Optimus(14278211, 48684651, 1792568627));
 function optimus_encode($f3, $id) 
-{ 
-	return $f3->get('optimus')->encode(hexdec($_id)); 
+{
+	return $f3->get('optimus')->encode(hexdec(explode('.', $id)[0])); 
 }
 
 // database
@@ -15,33 +15,64 @@ $db = new DB\Jig ('db/');
 $f3->set('project', new DB\Jig\Mapper($db, 'projects'));
 $f3->set('key', new DB\Jig\Mapper($db, 'keys'));
 
+function project_exists($f3, $project_id) {
+	return $f3->get('project')->count(array('@id=?', $project_id)) > 0;
+}
+
+// home page
 $f3->route('GET /',
     function() {
         echo 'Hello, world!';
     }
 );
 
-// get keys from a project
-$f3->route('GET /get/@key',
-    function($f3) {
-        echo $f3->get('PARAMS.key');
-    }
+// get all keys from a project
+$f3->route('GET /@project_id', 
+	function($f3) {
+
+		// get all keys from project
+		$keys = $f3->get('key')->find(array('@project_id=?', $f3->get['REQUEST.project_id']));
+
+		// build data
+		$data = array();
+		foreach ($keys as $key) {
+			$row = $key->cast();
+			unset($row["_id"]);
+			$data[] = $row;
+		}
+
+		echo json_encode($data);
+	}
 );
 
 // sets keys to a project
 $f3->route('POST /set', 
-	function($f3, $params) {
+	function($f3) {
 
-		$project_id = $f3->get('POST.project_id');
+		$project_id = $f3->get('REQUEST.project_id');
 
-		// TODO: validate project id
-
-		$keys = $f3->get('POST.keys');
-		$values = $f3->get('POST.values');
-		foreach ($keys as $key) {
-
+		// validate project id
+		if (!project_exists($project_id)) {
+			die();
 		}
 
+		// get mapper
+		$key = $f3->get('key');
+
+		// save each key
+		$keys = $f3->get('REQUEST.keys');
+		$values = $f3->get('REQUEST.values');
+		$count = min(count($keys), count($values));
+		for ($index = 0; $index < $count; $index++) {
+			$key->reset();
+			$key->project_id = $project_id;
+			$key->key = $keys[$index];
+			$key->value = $values[$index];
+			$key->save();
+		}
+
+		// return number of keys saved
+		echo $count;
 	}
 );
 
@@ -52,11 +83,14 @@ $f3->route('POST /create',
 
 		// create new project entry
 		$project->reset();
-		$project->title = $f3->get('POST.project_title');
+		$project->title = $f3->get('REQUEST.project_title');
+		$project->save();
+
+		$project->id = optimus_encode($f3, $project->_id);
 		$project->save();
 
 		// return project id
-		echo optimus_encode($f3, $project->_id);
+		echo $project->id;
 	}
 );
 
@@ -72,13 +106,8 @@ $f3->route('GET /projects',
 			// turn mapper to array
 			$row = $p->cast();
 
-			print_r($f3->get('optimus.encode'));
-
-			// transform the id field
-			$row['id'] = optimus_encode($f3, $project->_id);
-
-			// unset old id
-			unset($row['_id']);
+			// unset _id
+			// unset($row['_id']);
 
 			// set to data
 			$data[] = $row;
@@ -88,19 +117,42 @@ $f3->route('GET /projects',
 	}
 );
 
-// test for setting values
-$f3->route('GET /test/set', 
+// delete a project
+$f3->route('POST /delete', 
 	function($f3) {
-		$template = new Template;
-		echo $template->render('test/set.html');
+
+		$data = array();
+
+		$project = $f3->get('project')->load(array('@id=?', $f3->get('REQUEST.project_id')));
+		if ($project->dry()) {
+			$data['result'] = false;
+		}
+		else {
+			$project->erase();
+			$project->save();
+			$data['result'] = true;
+		}
+
+		return json_encode($data);
 	}
 );
 
-// test for creating a project
-$f3->route('GET /test/create', 
+// tests
+$f3->route('GET /test', 
 	function($f3) {
+
+		// prepare results
+		$f3->set('results', array());
+
+		// run tests
+		include('test.php');
+		
+		// display results
 		$template = new Template;
-		echo $template->render('test/create.html');
+		echo $template->render('ui/tests.html');
+
+		// cleanup
+		$f3->clear('results');
 	}
 );
 
