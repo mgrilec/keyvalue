@@ -44,7 +44,6 @@ class Projects {
 		}
 		else {
 			$project->erase();
-			$project->save();
 			$data['result'] = true;
 		}
 
