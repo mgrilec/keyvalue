@@ -15,6 +15,9 @@ $db = new DB\Jig ('db/');
 $f3->set('project', new DB\Jig\Mapper($db, 'projects'));
 $f3->set('key', new DB\Jig\Mapper($db, 'keys'));
 
+// autoload
+$f3->set('AUTOLOAD', 'handlers/; tests/');
+
 function project_exists($f3, $project_id) {
 	return $f3->get('project')->count(array('@id=?', $project_id)) > 0;
 }
@@ -76,66 +79,14 @@ $f3->route('POST /set',
 	}
 );
 
-// creates a new project
-$f3->route('POST /create', 
-	function($f3, $params) {
-		$project = $f3->get('project');
+// get all projects
+$f3->route('GET @projects: /projects', 'Projects->All');
 
-		// create new project entry
-		$project->reset();
-		$project->title = $f3->get('REQUEST.project_title');
-		$project->save();
-
-		$project->id = optimus_encode($f3, $project->_id);
-		$project->save();
-
-		// return project id
-		echo $project->id;
-	}
-);
-
-// lists all projects
-$f3->route('GET /projects', 
-	function($f3) {
-		$project = $f3->get('project');
-		$projects = $project->find();
-		$data = array();
-
-		foreach($projects as $p) {
-
-			// turn mapper to array
-			$row = $p->cast();
-
-			// unset _id
-			// unset($row['_id']);
-
-			// set to data
-			$data[] = $row;
-		}
-
-		echo json_encode($data);
-	}
-);
+// create a new project
+$f3->route('POST @project_create: /project/create', 'Projects->Create');
 
 // delete a project
-$f3->route('POST /delete', 
-	function($f3) {
-
-		$data = array();
-
-		$project = $f3->get('project')->load(array('@id=?', $f3->get('REQUEST.project_id')));
-		if ($project->dry()) {
-			$data['result'] = false;
-		}
-		else {
-			$project->erase();
-			$project->save();
-			$data['result'] = true;
-		}
-
-		return json_encode($data);
-	}
-);
+$f3->route('POST @project_delete: /project/delete', 'Projects->Delete');
 
 // tests
 $f3->route('GET /test', 
