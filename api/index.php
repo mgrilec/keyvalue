@@ -133,7 +133,7 @@ $f3->route('POST /delete',
 			$data['result'] = true;
 		}
 
-		return json_encode($data);
+		echo json_encode($data);
 	}
 );
 
@@ -146,7 +146,7 @@ $f3->route('GET /test',
 
 		// run tests
 		include('test.php');
-		
+
 		// display results
 		$template = new Template;
 		echo $template->render('ui/tests.html');

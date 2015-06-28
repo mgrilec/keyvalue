@@ -13,17 +13,17 @@ $f3->set('QUIET', false);
 
 $test->expect(
   in_array($project_id, $all_projects),
-  'project created'
+  'Create project'
 );
 
 // delete project
 $f3->set('QUIET', true);
 $f3->mock('POST /delete', array('project_id' => $project_id));
 $f3->set('QUIET', false);
-$delete_result = json_decode($f3->get('RESPONSE'));
+$delete_result = json_decode($f3->get('RESPONSE'), true);
 $test->expect(
   $delete_result['result'],
-  'project deleted'
+  'Delete project'
 );
 
 $f3->push('results', $test->results());
