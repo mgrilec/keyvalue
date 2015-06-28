@@ -31,6 +31,13 @@ class Keys {
 		echo json_encode($data);
 	}
 
+	public function Count($f3, $params) {
+		$count = $f3->get('key')->count(array('@project_id=?', $params['project_id']));
+		$data = array();
+		$data['count'] = $count;
+		echo json_encode($data);
+	}
+
 	public function Get($f3, $params) {
 		$key = $f3->get('key');
 		$key->load(array('@project_id=? and @key=?', $params['project_id'], $params['key']));
@@ -58,7 +65,7 @@ class Keys {
 			$data['data'][] = $row;
 		}
 
-		return json_encode($data);
+		echo json_encode($data);
 	}
 
 	public function Delete($f3, $params) {

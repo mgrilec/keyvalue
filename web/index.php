@@ -11,6 +11,12 @@ $f3->route('GET /',
     	$projects = $f3->get('api')->projects();
     	array_unshift($projects, array('create' => true));
 
+    	// get key count
+        for ($index = 0 ; $index < count($projects); $index++) {
+            $count = $f3->get('api')->keys_count($projects[$index]['id']);
+            $projects[$index]['count'] = $count;
+        }
+
     	$rows = array();
     	for ($i = 0; $i < count($projects); $i++) {
     		$row = floor($i / 3);
@@ -23,16 +29,16 @@ $f3->route('GET /',
 
 $f3->route('POST /create', 
 	function($f3, $params) {
-		// create new project
-		$response = $f3->get('api')->project_create($f3->get('REQUEST.project_title'), $f3->get('REQUEST.project_description'));
-		$id = $response['id'];
 
+		// create new project
+		$f3->get('api')->project_create($f3->get('REQUEST.project_title'), $f3->get('REQUEST.project_description'));
 		$f3->reroute('/');
 	}
 );
 
 $f3->route('GET /@project_id/delete',
 	function($f3, $params) {
+
 		// delete project
 		$f3->get('api')->project_delete($params['project_id']);
 		$f3->reroute('/');
@@ -44,14 +50,6 @@ $f3->route('GET /@project_id',
 
     	// get params
     	$project_id = $params['project_id'];
-
-    	// check project id
-    	if (ctype_digit($project_id)) {
-    		$project_id = intval($project_id);
-    	}
-    	else {
-    		$f3->reroute('/');
-		}
 
         echo $f3->get('template')->render('edit.html');
     }

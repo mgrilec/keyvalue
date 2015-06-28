@@ -35,8 +35,14 @@ $f3->route('POST @key_set: /keys/set', 'Keys->Set');
 // check if a key exists
 $f3->route('GET @key_exists: /keys/@project_id/@key/exists', 'Keys->Exists');
 
+// get key count
+$f3->route('GET @key_count: /keys/@project_id/count', 'Keys->Count');
+
 // gets a single key
 $f3->route('GET @key_get: /keys/@project_id/@key', 'Keys->Get');
+
+// gets all keys
+$f3->route('GET @keys: /keys/@project_id', 'Keys->GetAll');
 
 // unset a key
 $f3->route('POST @key_delete: /keys/delete', 'Keys->Delete');

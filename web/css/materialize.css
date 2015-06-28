@@ -2355,9 +2355,9 @@ span.badge {
     color: #fff;
     background-color: #26a69a;
     border-radius: 2px; }
-  span.badge.new:after {
+/*  span.badge.new:after {
     content: " new"; }
-
+*/
 .video-container {
   position: relative;
   padding-bottom: 56.25%;

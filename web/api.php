@@ -25,15 +25,23 @@ class Api {
 	}
 
 	public function projects() {
-		return $this->get('projects');
+		return $this->get('projects')['data'];
 	}
 
 	public function project_create($title, $description) {
-		return $this->post('projects/create', array("project_title" => $title, "project_description" => $description));
+		return $this->post('projects/create', array("project_title" => $title, "project_description" => $description))['id'];
 	}
 
 	public function project_delete($id) {
-		return $this->post('projects/delete', array("project_id" => $id));
+		return $this->post('projects/delete', array("project_id" => $id))['result'];
+	}
+
+	public function keys_count($id) {
+		return $this->get('keys/'.$id.'/count')['count'];
+	}
+
+	public function keys_get_all($id) {
+		return $this->get('keys/'.$id)['data'];
 	}
 }
 
