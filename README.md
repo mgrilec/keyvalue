@@ -4,16 +4,19 @@
 
 ### Projects
 
- * List all projects (GET /projects)
  * Create a project (POST /project/create)
+ * Check if a project exists (GET /project/@project_id/exists)
+ * Get a single project (GET /project/@project_id)
+ * List all projects (GET /projects)
  * Delete a project (POST /project/delete)
 
 ### Keys
 
- * Get all keys from a project (GET /keys/@project_id)
- * Get a single key from a project (GET keys/@project_id/@key)
- * Sets keys in a project (POST keys/set)
- * Unsets keys in a project (POST keys/unset)
+ * Sets keys (POST keys/set)
+ * Check if a key exists (POST keys/@project_id/@key/exists)
+ * Get a single key (GET keys/@project_id/@key)
+ * Get all keys (GET /keys/@project_id)
+ * Unsets keys (POST keys/unset)
 
 ### Users
 
