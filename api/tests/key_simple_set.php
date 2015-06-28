@@ -9,31 +9,36 @@ $f3->set('QUIET', false);
 
 $id = $f3->get('RESPONSE');
 
-// prepare keys
-$key = 'test_key_a';
-$value = 'a';
+// prepare key
+$key = rand();
+$value = rand();
 
 // set keys
 $f3->set('QUIET', true);
 $f3->mock('POST @key_set', array('project_id' => $id, 'keys' => array($key), 'values' => array($value)));
 $f3->set('QUIET', false);
 
-// get keys
+// check if key exists
 $f3->set('QUIET', true);
-$f3->mock('GET @key_get(@project_id='.$id.', @key='.$key.')');
-$response = $f3->get('RESPONSE');
+$f3->mock('GET @key_exists(@project_id='.$id.', @key='.$key.')');
 $f3->set('QUIET', false);
 
+$response = json_decode($f3->get('RESPONSE'), true);
+
 $test->expect(
-	$response == $value,
+	$response['result'],
 	"Set key"
 );
 
-// delete key from the database
-$f3->get('key')->load(array('@project_id=? and @key=?', $id, $key))->erase();
+// unset key
+$f3->set('QUIET', true);
+$f3->mock('POST @key_delete', array('project_id' => $id, 'keys' => array($key)));
+$f3->set('QUIET', false);
 
-// delete project from the database
-$f3->get('project')->load(array('@id=?', $id))->erase();
+// delete project
+$f3->set('QUIET', true);
+$f3->mock('POST @project_delete', array('project_id' => $id));
+$f3->set('QUIET', false);
 
 // return results
 $test_data = array();

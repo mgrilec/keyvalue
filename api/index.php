@@ -29,26 +29,32 @@ $f3->route('GET /',
     }
 );
 
-// gets a single key
-$f3->route('GET @key_get: /keys/@project_id/@key', 'Keys->Get');
-
 // sets keys
 $f3->route('POST @key_set: /keys/set', 'Keys->Set');
 
-// get all projects
-$f3->route('GET @projects: /projects', 'Projects->GetAll');
+// check if a key exists
+$f3->route('GET @key_exists: /keys/@project_id/@key/exists', 'Keys->Exists');
 
-// get a single project
-$f3->route('GET @project_get: /projects/@project_id', 'Projects->Get');
+// gets a single key
+$f3->route('GET @key_get: /keys/@project_id/@key', 'Keys->Get');
+
+// unset a key
+$f3->route('POST @key_delete: /keys/delete', 'Keys->Delete');
+
+// create a new project
+$f3->route('POST @project_create: /projects/create', 'Projects->Create');
 
 // check if a project exists
 $f3->route('GET @project_exists: /projects/@project_id/exists', 'Projects->Exists');
 
-// create a new project
-$f3->route('POST @project_create: /project/create', 'Projects->Create');
+// get a single project
+$f3->route('GET @project_get: /projects/@project_id', 'Projects->Get');
+
+// get all projects
+$f3->route('GET @projects: /projects', 'Projects->GetAll');
 
 // delete a project
-$f3->route('POST @project_delete: /project/delete', 'Projects->Delete');
+$f3->route('POST @project_delete: /projects/delete', 'Projects->Delete');
 
 // tests
 $f3->route('GET /test', 
