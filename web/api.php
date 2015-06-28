@@ -25,23 +25,28 @@ class Api {
 	}
 
 	public function projects() {
-		return $this->get('projects')['data'];
+		$projects = $this->get('projects');
+		return $projects ? $projects['data'] : projects();
 	}
 
-	public function project_create($title, $description) {
-		return $this->post('projects/create', array("project_title" => $title, "project_description" => $description))['id'];
+	public function project_get($project_id) {
+		return $this->get('projects/'.$project_id)['data'];
 	}
 
-	public function project_delete($id) {
-		return $this->post('projects/delete', array("project_id" => $id))['result'];
+	public function project_create($project_title, $project_description) {
+		return $this->post('projects/create', array("project_title" => $project_title, "project_description" => $project_description))['id'];
 	}
 
-	public function keys_count($id) {
-		return $this->get('keys/'.$id.'/count')['count'];
+	public function project_delete($project_id) {
+		return $this->post('projects/delete', array("project_id" => $project_id))['result'];
 	}
 
-	public function keys_get_all($id) {
-		return $this->get('keys/'.$id)['data'];
+	public function keys_count($project_id) {
+		return $this->get('keys/'.$project_id.'/count')['count'];
+	}
+
+	public function keys_get_all($project_id) {
+		return $this->get('keys/'.$project_id)['data'];
 	}
 }
 

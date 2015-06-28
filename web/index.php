@@ -48,10 +48,10 @@ $f3->route('GET /@project_id/delete',
 $f3->route('GET /@project_id',
     function($f3, $params) {
 
-    	// get params
-    	$project_id = $params['project_id'];
-
-        echo $f3->get('template')->render('edit.html');
+    	// get project
+        $project = $f3->get('api')->project_get($params['project_id']);
+        $project['keys'] = $f3->get('api')->keys_get_all($project['id']);
+        echo $f3->get('template')->render('edit.html', 'text/html', array('project' => $project));
     }
 );
 

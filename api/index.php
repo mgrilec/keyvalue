@@ -59,6 +59,9 @@ $f3->route('GET @project_get: /projects/@project_id', 'Projects->Get');
 // get all projects
 $f3->route('GET @projects: /projects', 'Projects->GetAll');
 
+// update a project
+$f3->route('POST @project_update: /projects/@project_id/update', 'Projects->Update');
+
 // delete a project
 $f3->route('POST @project_delete: /projects/delete', 'Projects->Delete');
 

@@ -32,11 +32,13 @@ class Projects {
 	public function Get($f3, $params) {
 
 		// find the project
-		$project = $f3->get('project')->load(array('@id=?', $params['project_id']));
+		$project = $f3->get('project');
+		$project->load(array('@id=?', $params['project_id']));
 
 		// convert to data
-		$data = $project->cast();
-		unset($data['_id']);
+		$data = array();
+		$data['data'] = $project ? $project->cast() : array();
+		unset($data['data']['_id']);
 
 		// output
 		echo json_encode($data);
@@ -46,6 +48,7 @@ class Projects {
 		$project = $f3->get('project');
 		$projects = $project->find();
 		$data = array();
+		$data['data'] = array();
 
 		foreach($projects as $p) {
 
@@ -59,6 +62,24 @@ class Projects {
 			$data['data'][] = $row;
 		}
 
+		echo json_encode($data);
+	}
+
+	public function Update($f3, $params) {
+
+		// find project
+		$project = $f3->get('project');
+		$project->load(array('@id=?', $f3->get('REQUEST.project.id')));
+
+		// copy fields from request
+		$project->copyfrom('REQUEST.project');
+
+		// save the modified project
+		$project->save();
+
+		// build data
+		$data = array();
+		$data['result'] = true;
 		echo json_encode($data);
 	}
 
