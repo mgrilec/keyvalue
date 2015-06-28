@@ -13,7 +13,7 @@
     <header>
       <nav class="light-blue lighten-1" role="navigation">
         <div class="nav-wrapper container">
-          <a id="logo-container" href="/" class="brand-logo">key value</a>
+          <a id="logo-container" href="." class="brand-logo">key value</a>
         </div>
       </nav>
     </header>
@@ -36,21 +36,23 @@
                   <a class="modal-trigger" href="#create">Create</a>
                   <div id="create" class="modal">
                     <div class="modal-content">
-                      <div class="row">
-                        <div class="col s12">
-                          <h4>Create new project</h4>
+                      <form action="create" method="post">
+                        <div class="row">
+                          <div class="col s12">
+                            <h4>Create new project</h4>
+                          </div>
+                        </div>
+                        <div class="row">
+                          <div class="input-field col s12">
+                            <input id="title" type="text" name="project_title" class="validate">
+                            <label for="title">Project title</label>
+                          </div>
                         </div>
                       </div>
-                      <div class="row">
-                        <div class="input-field col s12">
-                          <input id="title" type="text" class="validate">
-                          <label for="title">Project title</label>
-                        </div>
+                      <div class="modal-footer">
+                        <button class="modal-action modal-close waves-effect waves-green btn-flat" type="submit">Create</button>
                       </div>
-                    </div>
-                    <div class="modal-footer">
-                      <a href="#!" class=" modal-action modal-close waves-effect waves-green btn-flat">Create</a>
-                    </div>
+                    </form>
                   </div>
                 </div>
               </true>
@@ -60,6 +62,7 @@
               </div>
               <div class="card-action">
                 <a href="{{ @project.id }}">Edit</a>
+                <a href="{{ @project.id }}/delete">Delete</a>
               </div>
               </false>
               </check>
