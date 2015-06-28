@@ -24,7 +24,7 @@ $f3->route('GET /',
 $f3->route('POST /create', 
 	function($f3, $params) {
 		// create new project
-		$response = $f3->get('api')->project_create($f3->get('POST.project_title'));
+		$response = $f3->get('api')->project_create($f3->get('REQUEST.project_title'), $f3->get('REQUEST.project_description'));
 		$id = $response['id'];
 
 		$f3->reroute('/');

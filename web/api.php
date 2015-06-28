@@ -28,8 +28,8 @@ class Api {
 		return $this->get('projects');
 	}
 
-	public function project_create($title) {
-		return $this->post('projects/create', array("project_title" => $title));
+	public function project_create($title, $description) {
+		return $this->post('projects/create', array("project_title" => $title, "project_description" => $description));
 	}
 
 	public function project_delete($id) {

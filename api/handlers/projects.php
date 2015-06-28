@@ -7,6 +7,7 @@ class Projects {
 		// create new project entry
 		$project->reset();
 		$project->title = $f3->get('REQUEST.project_title');
+		$project->description = $f3->get('REQUEST.project_description');
 		$project->save();
 
 		$project->id = optimus_encode($f3, $project->_id);
