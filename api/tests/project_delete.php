@@ -30,7 +30,13 @@ $test->expect(
 	'Delete project'
 );
 
+$test_data = array();
+$test_data['name'] = 'Simple delete project';
+$test_data['results'] = $test->results();
+$test_data['status'] = $test->passed();
+
+
 // return results
-$f3->push('results', $test->results());
+$f3->push('tests', $test_data);
 
 ?>

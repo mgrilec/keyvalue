@@ -15,7 +15,7 @@ $project = $f3->get('project')->load(array('@id=?', $id));
 // check if its in the database
 $test->expect(
 	!$project->dry(),
-	'Simple create project'
+	'Create project'
 );
 
 // delete project from the database
@@ -24,7 +24,13 @@ if (!$project->dry()) {
 	$project->save();
 }
 
+$test_data = array();
+$test_data['name'] = 'Simple create project';
+$test_data['results'] = $test->results();
+$test_data['status'] = $test->passed();
+
+
 // return results
-$f3->push('results', $test->results());
+$f3->push('tests', $test_data);
 
 ?>
