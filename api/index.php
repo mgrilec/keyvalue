@@ -79,8 +79,14 @@ $f3->route('POST /set',
 	}
 );
 
+// gets a single key
+$f3->route('GET @key_get: /keys/@project_id/@key', 'Keys->Get');
+
+// sets keys
+$f3->route('POST @key_set: /keys/set', 'Keys->Set');
+
 // get all projects
-$f3->route('GET @projects: /projects', 'Projects->All');
+$f3->route('GET @projects: /projects', 'Projects->GetAll');
 
 // create a new project
 $f3->route('POST @project_create: /project/create', 'Projects->Create');

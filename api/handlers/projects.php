@@ -1,7 +1,7 @@
 <?php
 class Projects {
 
-	public function All($f3, $params) {
+	public function GetAll($f3, $params) {
 		$project = $f3->get('project');
 		$projects = $project->find();
 		$data = array();
