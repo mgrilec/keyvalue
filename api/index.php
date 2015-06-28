@@ -29,56 +29,6 @@ $f3->route('GET /',
     }
 );
 
-// get all keys from a project
-$f3->route('GET /@project_id', 
-	function($f3) {
-
-		// get all keys from project
-		$keys = $f3->get('key')->find(array('@project_id=?', $f3->get['REQUEST.project_id']));
-
-		// build data
-		$data = array();
-		foreach ($keys as $key) {
-			$row = $key->cast();
-			unset($row["_id"]);
-			$data[] = $row;
-		}
-
-		echo json_encode($data);
-	}
-);
-
-// sets keys to a project
-$f3->route('POST /set', 
-	function($f3) {
-
-		$project_id = $f3->get('REQUEST.project_id');
-
-		// validate project id
-		if (!project_exists($project_id)) {
-			die();
-		}
-
-		// get mapper
-		$key = $f3->get('key');
-
-		// save each key
-		$keys = $f3->get('REQUEST.keys');
-		$values = $f3->get('REQUEST.values');
-		$count = min(count($keys), count($values));
-		for ($index = 0; $index < $count; $index++) {
-			$key->reset();
-			$key->project_id = $project_id;
-			$key->key = $keys[$index];
-			$key->value = $values[$index];
-			$key->save();
-		}
-
-		// return number of keys saved
-		echo $count;
-	}
-);
-
 // gets a single key
 $f3->route('GET @key_get: /keys/@project_id/@key', 'Keys->Get');
 
@@ -87,6 +37,12 @@ $f3->route('POST @key_set: /keys/set', 'Keys->Set');
 
 // get all projects
 $f3->route('GET @projects: /projects', 'Projects->GetAll');
+
+// get a single project
+$f3->route('GET @project_get: /projects/@project_id', 'Projects->Get');
+
+// check if a project exists
+$f3->route('GET @project_exists: /projects/@project_id/exists', 'Projects->Exists');
 
 // create a new project
 $f3->route('POST @project_create: /project/create', 'Projects->Create');
