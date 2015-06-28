@@ -37,6 +37,11 @@ class Api {
 		return $this->post('projects/create', array("project_title" => $project_title, "project_description" => $project_description))['id'];
 	}
 
+	public function project_update($project) {
+		var_dump($project);
+		return $this->post('project/'.$project['id'].'/update', array("project" => $project))['result'];
+	}
+
 	public function project_delete($project_id) {
 		return $this->post('projects/delete', array("project_id" => $project_id))['result'];
 	}

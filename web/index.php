@@ -36,6 +36,17 @@ $f3->route('POST /create',
 	}
 );
 
+$f3->route('POST /update', 
+    function($f3, $params) {
+        var_dump($f3->get('REQUEST'));
+        $project['id'] = $f3->get('REQUEST.project_id');
+        $project['title'] = $f3->get('REQUEST.project_title');
+        $project['description'] = $f3->get('REQUEST.description');
+
+        $f3->get('api')->project_update($project);
+    }
+);
+
 $f3->route('GET /@project_id/delete',
 	function($f3, $params) {
 
