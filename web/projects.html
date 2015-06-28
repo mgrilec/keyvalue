@@ -1,94 +1,92 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
-	<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1.0"/>
-	<title>kv</title>
-
-	<!-- CSS	-->
-	<link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
-	<link href="css/materialize.css" type="text/css" rel="stylesheet" media="screen,projection"/>
-	<link href="css/style.css" type="text/css" rel="stylesheet" media="screen,projection"/>
-</head>
-<body>
-  <header>
-  	<nav class="light-blue lighten-1" role="navigation">
-  		<div class="nav-wrapper container">
-  		  <a id="logo-container" href="#" class="brand-logo">key value</a>
-  		</div>
-  	</nav>
-  	<div class="section no-pad-bot" id="index-banner">
-  		<div class="container" id="title">
-  		</div>
-  	</div>
-  </header>
-  <main>
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1.0"/>
+    <title>kv</title>
+    <!-- CSS  -->
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+    <link href="css/materialize.css" type="text/css" rel="stylesheet" media="screen,projection"/>
+    <link href="css/style.css" type="text/css" rel="stylesheet" media="screen,projection"/>
+  </head>
+  <body>
+    <header>
+      <nav class="light-blue lighten-1" role="navigation">
+        <div class="nav-wrapper container">
+          <a id="logo-container" href="/" class="brand-logo">key value</a>
+        </div>
+      </nav>
+    </header>
+    <main>
     <div class="container">
-      <div class="row">
+      <div class="section">
+        <h2>Projects</h2>
+      </div>
+      <div class="divider"></div>
+      <div class="section">
+        <repeat group="{{ @rows }}" value="{{ @row }}">
+        <div class="row">
+          <repeat group="{{ @row }}" value="{{ @project }}">
           <div class="col s4">
             <div class="card">
-              <div class="card-image">
-                <img src="images/sample.jpg">
-                <span class="card-title">Project Title</span>
-              </div>
+              <check if="{{ @project.create }}">
+              <true>
+                <div class="card-content">New Project</div>
+                <div class="card-action">
+                  <a class="modal-trigger" href="#create">Create</a>
+                  <div id="create" class="modal">
+                    <div class="modal-content">
+                      <div class="row">
+                        <div class="col s12">
+                          <h4>Create new project</h4>
+                        </div>
+                      </div>
+                      <div class="row">
+                        <div class="input-field col s12">
+                          <input id="title" type="text" class="validate">
+                          <label for="title">Project title</label>
+                        </div>
+                      </div>
+                    </div>
+                    <div class="modal-footer">
+                      <a href="#!" class=" modal-action modal-close waves-effect waves-green btn-flat">Create</a>
+                    </div>
+                  </div>
+                </div>
+              </true>
+              <false>
               <div class="card-content">
-                <p>I am a very simple card. I am good at containing small bits of information.
-                I am convenient because I require little markup to use effectively.</p>
+                {{ @project.title }}
               </div>
               <div class="card-action">
-                <a href="255">Edit</a>
-                <a href="#">Delete</a>
+                <a href="{{ @project.id }}">Edit</a>
               </div>
+              </false>
+              </check>
             </div>
           </div>
-          <div class="col s4">
-            <div class="card">
-              <div class="card-image">
-                <img src="images/sample.jpg">
-                <span class="card-title">Project Title</span>
-              </div>
-              <div class="card-content">
-                <p>I am a very simple card. I am good at containing small bits of information.
-                I am convenient because I require little markup to use effectively.</p>
-              </div>
-              <div class="card-action">
-                <a href="256">Edit</a>
-                <a href="#">Delete</a>
-              </div>
-            </div>
-          </div>
-          <div class="col s4">
-            <div class="card">
-              <div class="card-image">
-                <img src="images/sample.jpg">
-                <span class="card-title">New Project</span>
-              </div>
-              <div class="card-content">
-                <p>I am a very simple card. I am good at containing small bits of information.
-                I am convenient because I require little markup to use effectively.</p>
-              </div>
-              <div class="card-action">
-                <a href="257">Create</a>
-              </div>
-            </div>
-          </div>
+          </repeat>
+        </div>
+        </repeat>
+      </div>
+    </div>
+    </main>
+    <footer class="page-footer orange">
+      <div class="container">
+      </div>
+      <div class="footer-copyright">
+        <div class="container">
+          Made by <a class="orange-text text-lighten-3" href="http://materializecss.com">Materialize</a>
         </div>
       </div>
-  </main>
-	<footer class="page-footer orange">
-		<div class="container">
-		</div>
-		<div class="footer-copyright">
-			<div class="container">
-			Made by <a class="orange-text text-lighten-3" href="http://materializecss.com">Materialize</a>
-			</div>
-		</div>
-	</footer>
-
-
-	<!--	Scripts-->
-	<script src="js/jquery.min.js"></script>
-	<script src="js/materialize.js"></script>
-
-	</body>
+    </footer>
+    <!--  Scripts-->
+    <script src="js/jquery.min.js"></script>
+    <script src="js/materialize.js"></script>
+    <script type="text/javascript">
+    $(document).ready(function() {
+    $('.modal-trigger').leanModal();
+    });
+    </script>
+  </body>
 </html>

@@ -10,7 +10,7 @@ class Api {
 	private function get($route) {
 		$url = $this->url . $route;
 		$content = $this->web->request($url);
-		return json_decode($content['body']);
+		return json_decode($content['body'], true);
 	}
 
 	public function projects() {
