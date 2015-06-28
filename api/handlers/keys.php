@@ -34,11 +34,31 @@ class Keys {
 	public function Get($f3, $params) {
 		$key = $f3->get('key');
 		$key->load(array('@project_id=? and @key=?', $params['project_id'], $params['key']));
-		echo $key->value;
+
+		$data = array();
+		$data['data'] = $key->value;
+
+		echo json_encode($data);
 	}
 
 	public function GetAll($f3, $params) {
+		$keys = $f3->get('key')->find(array('@project_id=?', $params['project_id']));
 
+		$data = array();
+		$data['data'] = array();
+		foreach ($keys as $key) {
+
+			// turn mapper to array
+			$row = $key->cast();
+
+			// delete _id
+			unset($row['_id']);
+			
+			// add row to data
+			$data['data'][] = $row;
+		}
+
+		return json_encode($data);
 	}
 
 	public function Delete($f3, $params) {

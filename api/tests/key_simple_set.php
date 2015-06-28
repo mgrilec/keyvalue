@@ -4,10 +4,10 @@ $test = new Test;
 
 // create a project
 $f3->set('QUIET', true);
-$f3->mock('POST @project_create', array('project_title' => 'testtest'));
+$f3->mock('POST @project_create', array('project_title' => rand()));
 $f3->set('QUIET', false);
 
-$id = $f3->get('RESPONSE');
+$id = json_decode($f3->get('RESPONSE'), true)['id'];
 
 // prepare key
 $key = rand();

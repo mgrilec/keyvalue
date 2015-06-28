@@ -12,8 +12,13 @@ class Projects {
 		$project->id = optimus_encode($f3, $project->_id);
 		$project->save();
 
-		// return project id
-		echo $project->id;
+		// convert to data
+		$data = array();
+		$data['result'] = true;
+		$data['id'] = $project->id;
+
+		// output
+		echo json_encode($data);
 	}
 
 	public function Exists($f3, $params) {
@@ -46,10 +51,10 @@ class Projects {
 			// turn mapper to array
 			$row = $p->cast();
 
-			// unset _id
+			// delete _id
 			unset($row['_id']);
 
-			// set to data
+			// add row to data
 			$data[] = $row;
 		}
 
