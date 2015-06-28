@@ -15,6 +15,9 @@ $db = new DB\Jig ('db/');
 $f3->set('project', new DB\Jig\Mapper($db, 'projects'));
 $f3->set('key', new DB\Jig\Mapper($db, 'keys'));
 
+// autoload
+$f3->set('AUTOLOAD', 'handlers/');
+
 function project_exists($f3, $project_id) {
 	return $f3->get('project')->count(array('@id=?', $project_id)) > 0;
 }
@@ -26,116 +29,32 @@ $f3->route('GET /',
     }
 );
 
-// get all keys from a project
-$f3->route('GET /@project_id', 
-	function($f3) {
+// sets keys
+$f3->route('POST @key_set: /keys/set', 'Keys->Set');
 
-		// get all keys from project
-		$keys = $f3->get('key')->find(array('@project_id=?', $f3->get['REQUEST.project_id']));
+// check if a key exists
+$f3->route('GET @key_exists: /keys/@project_id/@key/exists', 'Keys->Exists');
 
-		// build data
-		$data = array();
-		foreach ($keys as $key) {
-			$row = $key->cast();
-			unset($row["_id"]);
-			$data[] = $row;
-		}
+// gets a single key
+$f3->route('GET @key_get: /keys/@project_id/@key', 'Keys->Get');
 
-		echo json_encode($data);
-	}
-);
+// unset a key
+$f3->route('POST @key_delete: /keys/delete', 'Keys->Delete');
 
-// sets keys to a project
-$f3->route('POST /set', 
-	function($f3) {
+// create a new project
+$f3->route('POST @project_create: /projects/create', 'Projects->Create');
 
-		$project_id = $f3->get('REQUEST.project_id');
+// check if a project exists
+$f3->route('GET @project_exists: /projects/@project_id/exists', 'Projects->Exists');
 
-		// validate project id
-		if (!project_exists($project_id)) {
-			die();
-		}
+// get a single project
+$f3->route('GET @project_get: /projects/@project_id', 'Projects->Get');
 
-		// get mapper
-		$key = $f3->get('key');
-
-		// save each key
-		$keys = $f3->get('REQUEST.keys');
-		$values = $f3->get('REQUEST.values');
-		$count = min(count($keys), count($values));
-		for ($index = 0; $index < $count; $index++) {
-			$key->reset();
-			$key->project_id = $project_id;
-			$key->key = $keys[$index];
-			$key->value = $values[$index];
-			$key->save();
-		}
-
-		// return number of keys saved
-		echo $count;
-	}
-);
-
-// creates a new project
-$f3->route('POST /create', 
-	function($f3, $params) {
-		$project = $f3->get('project');
-
-		// create new project entry
-		$project->reset();
-		$project->title = $f3->get('REQUEST.project_title');
-		$project->save();
-
-		$project->id = optimus_encode($f3, $project->_id);
-		$project->save();
-
-		// return project id
-		echo $project->id;
-	}
-);
-
-// lists all projects
-$f3->route('GET /projects', 
-	function($f3) {
-		$project = $f3->get('project');
-		$projects = $project->find();
-		$data = array();
-
-		foreach($projects as $p) {
-
-			// turn mapper to array
-			$row = $p->cast();
-
-			// unset _id
-			// unset($row['_id']);
-
-			// set to data
-			$data[] = $row;
-		}
-
-		echo json_encode($data);
-	}
-);
+// get all projects
+$f3->route('GET @projects: /projects', 'Projects->GetAll');
 
 // delete a project
-$f3->route('POST /delete', 
-	function($f3) {
-
-		$data = array();
-
-		$project = $f3->get('project')->load(array('@id=?', $f3->get('REQUEST.project_id')));
-		if ($project->dry()) {
-			$data['result'] = false;
-		}
-		else {
-			$project->erase();
-			$project->save();
-			$data['result'] = true;
-		}
-
-		echo json_encode($data);
-	}
-);
+$f3->route('POST @project_delete: /projects/delete', 'Projects->Delete');
 
 // tests
 $f3->route('GET /test', 
@@ -145,7 +64,10 @@ $f3->route('GET /test',
 		$f3->set('results', array());
 
 		// run tests
-		include('test.php');
+		foreach (glob("tests/*.php") as $filename)
+		{
+		    include $filename;
+		}
 
 		// display results
 		$template = new Template;

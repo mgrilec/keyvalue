@@ -22,7 +22,3 @@ body {
 main {
 	flex: 1 0 auto;
 }
-
-span.badge {
-	position: inherit;
-}

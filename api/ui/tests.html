@@ -26,26 +26,39 @@
     <div class="container">
       <div class="row">
         <div class="col s12">
-          <repeat group="{{ @results }}" value="{{ @result }}">
-            <ul class="collapsible popout" data-collapsible="accordion">
-              <repeat group="{{ @result }}" value="{{ @r }}">
+          <ul class="collapsible popout" data-collapsible="accordion">
+            <repeat group="{{ @tests }}" value="{{ @test_data }}">
                 <li>
                   <div class="collapsible-header">
-                      <check if="{{ @r.status }}">
-                        <true><span class="badge green white-text">PASSED</span></true>
-                        <false><span class="badge red white-text">FAILED</span></false>
-                      </check>
-                      {{ trim(@r.text) }}
+                    <check if="{{ @test_data.status }}">
+                      <true><i class="material-icons">done</i></true>
+                      <false><i class="material-icons">not_interested</i></false>
+                    </check>
+                    {{ @test_data.name }}
                   </div>
                   <div class="collapsible-body">
-                    <blockquote>{{ @r.source }}</blockquote>
+                    <table>
+                      <tbody>
+                        <repeat group="{{ @test_data.results }}" value="{{ @result }}">
+                          <tr>
+                            <td>{{ @result.text }}</td>
+                            <td>{{ @result.source }}</td>
+                            <td>
+                              <check if="{{ @result.status }}">
+                                <true>PASSED</true>
+                                <false>FAILED</false>
+                              </check>
+                            </td>
+                          </tr>
+                        </repeat>
+                      </tbody>
+                    </table>
                   </div>
-                </li>
-              </repeat>
-            </ul>
-          </repeat>
+                </li>  
+            </repeat>
+          </ul>
         </div>
-        </div>
+      </div>
     </div>
   </main>
 	<footer class="page-footer orange">
