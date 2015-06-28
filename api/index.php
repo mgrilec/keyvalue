@@ -100,7 +100,7 @@ $f3->route('GET /test',
 		{
 		    include $filename;
 		}
-		
+
 		// display results
 		$template = new Template;
 		echo $template->render('ui/tests.html');
