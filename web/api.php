@@ -38,8 +38,7 @@ class Api {
 	}
 
 	public function project_update($project) {
-		var_dump($project);
-		return $this->post('project/'.$project['id'].'/update', array("project" => $project))['result'];
+		return $this->post('projects/'.$project['id'].'/update', array("project" => $project))['result'];
 	}
 
 	public function project_delete($project_id) {
