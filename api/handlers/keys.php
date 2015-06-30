@@ -57,12 +57,9 @@ class Keys {
 
 			// turn mapper to array
 			$row = $key->cast();
-
-			// delete _id
-			unset($row['_id']);
 			
 			// add row to data
-			$data['data'][] = $row;
+			$data['data'][$row['key']] = $row['value'];
 		}
 
 		echo json_encode($data);
