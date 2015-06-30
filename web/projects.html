@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1.0"/>
+    <title>kv</title>
+    <!-- CSS  -->
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+    <link href="css/materialize.css" type="text/css" rel="stylesheet" media="screen,projection"/>
+    <link href="css/style.css" type="text/css" rel="stylesheet" media="screen,projection"/>
+  </head>
+  <body>
+    <header>
+      <nav class="light-blue lighten-1" role="navigation">
+        <div class="nav-wrapper container">
+          <a id="logo-container" href="." class="brand-logo">key value</a>
+        </div>
+      </nav>
+    </header>
+    <main>
+    <div class="container">
+      <div class="section">
+        <h2>Projects</h2>
+      </div>
+      <div class="divider"></div>
+      <div class="section">
+        <repeat group="{{ @rows }}" value="{{ @row }}">
+        <div class="row">
+          <repeat group="{{ @row }}" value="{{ @project }}">
+          <div class="col s4">
+            <div class="card">
+              <check if="{{ @project.create }}">
+              <true>
+                <div class="card-content">
+                  <div class="row">
+                    <div class="col s12">
+                      <h5>New Project</h5>
+                    </div>
+                  </div>
+                  <div class="row">
+                    <div class="col s12 grey-text lighten-2-text">
+                      Project Description
+                    </div>
+                  </div>
+                </div>
+                <div class="card-action">
+                  <a class="modal-trigger" href="#create">Create</a>
+                </div>
+              </true>
+              <false>
+              <div class="card-content">
+                <div class="row valign-wrapper">
+                  <div class="col s12">
+                    <h5>{{ @project.title }} <span class="badge new">{{ @project.count == 0 ? 'Project empty' : '' }}</span></h5>
+                  </div>
+                </div>
+                <div class="row">
+                  <div class="col s12 grey-text lighten-2-text">
+                    {{ @project.description }}
+                  </div>
+                </div>
+                
+              </div>
+              <div class="card-action">
+                <a href="{{ @project.id }}">Edit</a>
+                <a href="{{ @project.id }}/delete">Delete</a>
+              </div>
+              </false>
+              </check>
+            </div>
+          </div>
+          </repeat>
+        </div>
+        </repeat>
+      </div>
+    </div>
+    <div id="create" class="modal">
+      <form action="create" method="post">
+        <div class="modal-content">
+          <div class="row">
+            <div class="col s12">
+              <h4>Create new project</h4>
+            </div>
+          </div>
+          <div class="row">
+            <div class="input-field col s12">
+              <input id="title" type="text" name="project_title" class="validate">
+              <label for="title">Project title</label>
+            </div>
+          </div>
+          <div class="row">
+            <div class="input-field col s12">
+              <input id="description" type="text" name="project_description" class="validate">
+              <label for="description">Project description</label>
+            </div>
+          </div>
+        </div>
+        <div class="modal-footer">
+          <button class="modal-action modal-close waves-effect waves-green btn-flat" type="submit">Create</button>
+        </div>
+      </form>
+    </div>
+    </main>
+    <footer class="page-footer orange">
+      <div class="container">
+      </div>
+      <div class="footer-copyright">
+        <div class="container">
+          Made by <a class="orange-text text-lighten-3" href="http://materializecss.com">Materialize</a>
+        </div>
+      </div>
+    </footer>
+    <!--  Scripts-->
+    <script src="js/jquery.min.js"></script>
+    <script src="js/materialize.js"></script>
+    <script type="text/javascript">
+    $(document).ready(function() {
+    $('.modal-trigger').leanModal();
+    });
+    </script>
+  </body>
+</html>
