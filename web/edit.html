@@ -49,11 +49,11 @@
           <repeat group="{{ @project.keys }}" key="{{ @key }}" value="{{ @value }}" counter="{{ @index }}">
           <div class="row">
             <div class="col s2 input-field">
-              <input id="key_{{@index}}_new" type="text" class="validate" name="{{ keys.@key.new }}" value="{{@key}}">
+              <input id="key_{{@index}}_new" type="text" class="validate" name="keys[{{@key}}][key]" value="{{@key}}">
               <label for="key_{{@index}}">Key</label>
             </div>
             <div class="col s8 input-field">
-              <input placeholder="Try clicking on something!" id="value_{{@index}}" type="text" class="validate" name="{{ keys.@value }}"  value="{{@value}}">
+              <input placeholder="Try clicking on something!" id="value_{{@index}}" type="text" class="validate" name="keys[{{@key}}][value]"  value="{{@value}}">
               <label for="value_{{@index}}">Value</label>
             </div>
             <div class="col s2 input-field">
@@ -63,11 +63,11 @@
           </repeat>
           <div class="row">
             <div class="col s2 input-field">
-              <input placeholder="player_enter" type="text" class="validate" name="keys.new[]">
+              <input placeholder="player_enter" type="text" class="validate" name="new_keys[]">
               <label>Key</label>
             </div>
             <div class="col s8 input-field">
-              <input placeholder="Tonight we dine in hell!" type="text" class="validate" name="values.new[]">
+              <input placeholder="Tonight we dine in hell!" type="text" class="validate" name="new_values[]">
               <label>Value</label>
             </div>
           </div>

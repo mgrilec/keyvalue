@@ -43,6 +43,12 @@ $f3->route('POST /update',
         $project = $f3->get('REQUEST.project');
         $f3->get('api')->project_update($project);
         $f3->reroute('/'.$project['id']);
+
+        // add new keys
+        $new_count = min($f3->get('REQUEST.new_keys'), $f3->get('REQUEST.new_values'));
+        for ($index = 0; $index < $new_count; $index++) {
+            
+        }
     }
 );
 
