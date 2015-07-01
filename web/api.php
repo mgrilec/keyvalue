@@ -49,6 +49,10 @@ class Api {
 		return $this->post('keys/set', array("project_id" => $project_id, "keys" => $keys, "values" => $values))['count'];
 	}
 
+	public function keys_delete($project_id, $keys) {
+		return $this->post('keys/delete', array("project_id" => $project_id, "keys" => $keys))['count'];
+	}
+
 	public function keys_count($project_id) {
 		return $this->get('keys/'.$project_id.'/count')['count'];
 	}

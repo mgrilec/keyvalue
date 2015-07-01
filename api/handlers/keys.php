@@ -2,20 +2,41 @@
 
 class Keys {
 
+	public function ValidateKey($key) {
+		return !empty($key);
+	}
+
+	public function ValidateValue($value) {
+		return !empty($value);
+	}
+
 	public function Set($f3, $params) {
 
 		$project_id = $f3->get('REQUEST.project_id');
 		$keys = $f3->get('REQUEST.keys');
 		$values = $f3->get('REQUEST.values');
 
-		$count = min(count($keys), count($values));
-		for ($index = 0; $index < $count; $index++) {
-			$key = $f3->get('key');
-			$key->reset();
-			$key->project_id = $f3->get('REQUEST.project_id');
-			$key->key = $keys[$index];
-			$key->value = $values[$index];
-			$key->save();
+		$count = 0;
+		$total = min(count($keys), count($values));
+		if ($total > 0) {
+			for ($index = 0; $index < $total; $index++) {
+
+				// validate key
+				if (!$this->ValidateKey($keys[$index]))
+					continue;
+
+				// validate value
+				if (!$this->ValidateValue($values[$index]))
+					continue;
+
+				$key = $f3->get('key');
+				$key->reset();
+				$key->project_id = $f3->get('REQUEST.project_id');
+				$key->key = $keys[$index];
+				$key->value = $values[$index];
+				$key->save();
+				$count++;
+			}
 		}
 
 		$data = array();
