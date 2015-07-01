@@ -93,6 +93,7 @@ class Projects {
 		}
 		else {
 			$project->erase();
+			$f3->get('key')->erase(array('@project_id=?', $f3->get('REQUEST.project_id')));
 			$data['result'] = true;
 		}
 
