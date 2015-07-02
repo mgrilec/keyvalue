@@ -17,7 +17,7 @@ $f3->set('QUIET', false);
 $response = json_decode($f3->get('RESPONSE'), true);
 
 // check if project exists
-$test->expect($response['result'], 'Create project');
+$test->expect(isset($response['result']), 'Create project');
 
 // delete project
 $f3->set('QUIET', true);
@@ -26,6 +26,7 @@ $f3->set('QUIET', false);
 
 // return results
 $test_data = array();
+$test_data['category'] = "Projects";
 $test_data['name'] = 'Simple create project';
 $test_data['results'] = $test->results();
 $test_data['status'] = $test->passed();

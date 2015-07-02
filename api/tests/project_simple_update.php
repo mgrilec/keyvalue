@@ -11,9 +11,9 @@ $id = json_decode($f3->get('RESPONSE'), true)['id'];
 
 // get project
 $f3->set('QUIET', true);
-$f3->mock('GET @project_get', array('project_id' => $id));
+$f3->mock('GET @project_get(@project_id='.$id.')');
 $f3->set('QUIET', false);
-$project = json_decode($f3->get('RESPONSE'), true)['data'];
+$project = json_decode($f3->get('RESPONSE'), true)['result'];
 
 // modify the project
 $new_title = rand();
@@ -26,9 +26,9 @@ $f3->set('QUIET', false);
 
 // get project
 $f3->set('QUIET', true);
-$f3->mock('GET @project_get', array('project_id' => $id));
+$f3->mock('GET @project_get(@project_id='.$id.')');
 $f3->set('QUIET', false);
-$project = json_decode($f3->get('RESPONSE'), true)['data'];
+$project = json_decode($f3->get('RESPONSE'), true)['result'];
 
 $test->expect(
 	$project['title'] == $new_title, 
@@ -42,6 +42,7 @@ $f3->set('QUIET', false);
 
 // return results
 $test_data = array();
+$test_data['category'] = "Projects";
 $test_data['name'] = 'Simple update project';
 $test_data['results'] = $test->results();
 $test_data['status'] = $test->passed();

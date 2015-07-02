@@ -25,6 +25,7 @@ $test->expect(!$response['result'], 'Delete project');
 
 // return results
 $test_data = array();
+$test_data['category'] = "Projects";
 $test_data['name'] = 'Simple delete project';
 $test_data['results'] = $test->results();
 $test_data['status'] = $test->passed();

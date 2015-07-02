@@ -30,6 +30,7 @@ $test->expect($response['count'] == 0, 'Delete project keys');
 
 // return results
 $test_data = array();
+$test_data['category'] = "Projects";
 $test_data['name'] = 'Delete project deletes keys';
 $test_data['results'] = $test->results();
 $test_data['status'] = $test->passed();

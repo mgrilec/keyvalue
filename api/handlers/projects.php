@@ -1,43 +1,81 @@
 <?php
 class Projects {
 
+	public function ValidateProjectTitle($title) {
+		return array('result' => strlen(trim($title)) > 0, 'error' => "Invalid project title");
+	}
+
+	public function ValidateProjectId($id) {
+		return array('result' => ctype_digit($id), 'error' => "Invalid project ID");
+	}
+
 	public function Create($f3, $params) {
-		$project = $f3->get('project');
+		$data = array();
+
+		// validate title
+		$validation = $this->ValidateProjectTitle($f3->get('REQUEST.project_title'));
+		if (!$validation['result']) {
+			$data['error'] = $validation['error'];
+			echo json_encode($data);
+			return;
+		}
+
+		$projectMapper = $f3->get('project');
 
 		// create new project entry
-		$project->reset();
-		$project->title = $f3->get('REQUEST.project_title');
-		$project->description = $f3->get('REQUEST.project_description');
-		$project->save();
+		$projectMapper->reset();
+		$projectMapper->title = $f3->get('REQUEST.project_title');
+		$projectMapper->description = $f3->get('REQUEST.project_description');
+		$projectMapper->id = optimus_encode($f3, $projectMapper->_id);
+		$projectMapper->save();
 
-		$project->id = optimus_encode($f3, $project->_id);
-		$project->save();
-
-		// convert to data
-		$data = array();
-		$data['result'] = true;
-		$data['id'] = $project->id;
+		// get data
+		$data['id'] = $projectMapper->id;
 
 		// output
 		echo json_encode($data);
 	}
 
 	public function Exists($f3, $params) {
-		$count = $f3->get('project')->count(array('@id=?', $params['project_id']));
 		$data = array();
+
+		// validate project id
+		$validation = $this->ValidateProjectId($params['project_id']);
+		if (!$validation['result']) {
+			$data['error'] = $validation['error'];
+			echo json_encode($data);
+			return;
+		}
+
+		$count = $f3->get('project')->count(array('@id=?', $params['project_id']));
 		$data['result'] = $count == 1;
 		echo json_encode($data);
 	}
 
 	public function Get($f3, $params) {
+		$data = array();
+
+		// validate project id
+		$validation = $this->ValidateProjectId($params['project_id']);
+		if (!$validation['result']) {
+			$data['error'] = $validation['error'];
+			echo json_encode($data);
+			return;
+		}
 
 		// find the project
-		$project = $f3->get('project');
-		$project->load(array('@id=?', $params['project_id']));
+		$projectMapper = $f3->get('project');
+		$projectMapper->load(array('@id=?', $params['project_id']));
+
+		// check if project exists
+		if ($projectMapper->dry()) {
+			$data['error'] = "No such project";
+			echo json_encode($data);
+			return;
+		}
 
 		// convert to data
-		$data = array();
-		$data['data'] = $project ? $project->cast() : array();
+		$data['result'] = $projectMapper->cast();
 		unset($data['data']['_id']);
 
 		// output
