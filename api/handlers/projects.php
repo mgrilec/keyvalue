@@ -76,7 +76,7 @@ class Projects {
 
 		// convert to data
 		$data['result'] = $projectMapper->cast();
-		unset($data['data']['_id']);
+		unset($data['result']['_id']);
 
 		// output
 		echo json_encode($data);
