@@ -30,7 +30,7 @@ class Api {
 	}
 
 	public function project_get($project_id) {
-		return $this->get('projects/'.$project_id)['data'];
+		return $this->get('projects/'.$project_id)['result'];
 	}
 
 	public function project_create($project_title, $project_description) {
