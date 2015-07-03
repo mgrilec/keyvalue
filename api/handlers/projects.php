@@ -6,14 +6,14 @@ class Projects {
 	}
 
 	public function ValidateProjectId($id) {
-		return array('result' => ctype_digit($id), 'error' => "Invalid project ID");
+		return array('result' => ctype_digit($id) || is_int($id), 'error' => "Invalid project ID");
 	}
 
 	public function Create($f3, $params) {
 		$data = array();
 
 		// validate title
-		$validation = $this->ValidateProjectTitle($f3->get('REQUEST.project_title'));
+		$validation = $this->ValidateProjectTitle($f3->get('REQUEST.project.title'));
 		if (!$validation['result']) {
 			$data['error'] = $validation['error'];
 			echo json_encode($data);
@@ -23,14 +23,13 @@ class Projects {
 		$projectMapper = $f3->get('project');
 
 		// create new project entry
-		$projectMapper->reset();
-		$projectMapper->title = $f3->get('REQUEST.project_title');
-		$projectMapper->description = $f3->get('REQUEST.project_description');
+		$projectMapper->title = $f3->get('REQUEST.project.title');
+		$projectMapper->description = $f3->get('REQUEST.project.description');
 		$projectMapper->id = optimus_encode($f3, $projectMapper->_id);
 		$projectMapper->save();
 
 		// get data
-		$data['id'] = $projectMapper->id;
+		$data['result'] = $projectMapper->id;
 
 		// output
 		echo json_encode($data);
@@ -86,7 +85,7 @@ class Projects {
 		$project = $f3->get('project');
 		$projects = $project->find();
 		$data = array();
-		$data['data'] = array();
+		$data['result'] = array();
 
 		foreach($projects as $p) {
 
@@ -104,36 +103,72 @@ class Projects {
 	}
 
 	public function Update($f3, $params) {
+		$data = array();
+
+		// validate project id
+		$validation = $this->ValidateProjectId($f3->get('REQUEST.project.id'));
+		if (!$validation['result']) {
+			$data['error'] = $validation['error'];
+			echo json_encode($data);
+			return;
+		}
+
+		// validate project title
+		$validation = $this->ValidateProjectTitle($f3->get('REQUEST.project.title'));
+		if (!$validation['result']) {
+			$data['error'] = $validation['error'];
+			echo json_encode($data);
+			return;
+		}
 
 		// find project
-		$project = $f3->get('project');
-		$project->load(array('@id=?', $f3->get('REQUEST.project.id')));
+		$projectMapper = $f3->get('project');
+		$projectMapper->load(array('@id=?', $f3->get('REQUEST.project.id')));
+
+		// check if project exists
+		if ($projectMapper->dry()) {
+			$data['error'] = "No such project";
+			echo json_encode($data);
+			return;
+		}
 
 		// copy fields from request
-		$project->copyfrom('REQUEST.project');
+		$projectMapper->title = $f3->get('REQUEST.project.title');
+		$projectMapper->description = $f3->get('REQUEST.project.description');
 
 		// save the modified project
-		$project->save();
+		$projectMapper->save();
 
 		// build data
-		$data = array();
 		$data['result'] = true;
 		echo json_encode($data);
 	}
 
 	public function Delete($f3, $params) {
 		$data = array();
-		$project = $f3->get('project');
-		$project->load(array('@id=?', $f3->get('REQUEST.project_id')));
 
-		if ($project->dry()) {
-			$data['result'] = false;
+		// validate project id
+		$validation = $this->ValidateProjectId($f3->get('REQUEST.project.id'));
+		if (!$validation['result']) {
+			$data['error'] = $validation['error'];
+			echo json_encode($data);
+			return;
 		}
-		else {
-			$project->erase();
-			$f3->get('key')->erase(array('@project_id=?', $f3->get('REQUEST.project_id')));
-			$data['result'] = true;
+
+		$projectMapper = $f3->get('project');
+		$projectMapper->load(array('@id=?', $f3->get('REQUEST.project.id')));
+
+		// check if project exists
+		if ($projectMapper->dry()) {
+			$data['error'] = "No such project";
+			echo json_encode($data);
+			return;
 		}
+
+		
+		$projectMapper->erase();
+		$f3->get('key')->erase(array('@project_id=?', $f3->get('REQUEST.project.id')));
+		$data['result'] = true;
 
 		echo json_encode($data);
 	}
