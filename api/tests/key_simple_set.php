@@ -30,14 +30,9 @@ $test->expect(
 	"Set key"
 );
 
-// unset key
-$f3->set('QUIET', true);
-$f3->mock('POST @key_delete', array('project_id' => $id, 'keys' => array($key)));
-$f3->set('QUIET', false);
-
 // delete project
 $f3->set('QUIET', true);
-$f3->mock('POST @project_delete', array('project_id' => $id));
+$f3->mock('POST @project_delete', array('project' => array('id' => $id)));
 $f3->set('QUIET', false);
 
 // return results

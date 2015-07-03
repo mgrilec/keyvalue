@@ -2,19 +2,37 @@
 
 class Keys {
 
-	public function ValidateKey($key) {
+	public static function ValidateKey($key) {
 		return !empty($key);
 	}
 
-	public function ValidateValue($value) {
+	public static function ValidateValue($value) {
 		return !empty($value);
 	}
 
-	public function Set($f3, $params) {
+	public static function Set($f3, $params) {
+		$data = array();
 
-		$project_id = $f3->get('REQUEST.project_id');
 		$keys = $f3->get('REQUEST.keys');
 		$values = $f3->get('REQUEST.values');
+
+		// validate project id
+		$validation = Projects::ValidateProjectId($f3->get('REQUEST.project_id'));
+		if (!$validation['result']) {
+			$data['error'] = $validation['error'];
+			echo json_encode($data);
+			return;
+		}
+
+		// get project
+		$projectMapper = $f3->get('project')->load(array('@id=?', $f3->get('REQUEST.project_id')));
+
+		// check if project exists
+		if ($projectMapper->dry()) {
+			$data['error'] = "No such project";
+			echo json_encode($data);
+			return;
+		}
 
 		$count = 0;
 		$total = min(count($keys), count($values));
@@ -22,11 +40,11 @@ class Keys {
 			for ($index = 0; $index < $total; $index++) {
 
 				// validate key
-				if (!$this->ValidateKey($keys[$index]))
+				if (!Keys::ValidateKey($keys[$index]))
 					continue;
 
 				// validate value
-				if (!$this->ValidateValue($values[$index]))
+				if (!Keys::ValidateValue($values[$index]))
 					continue;
 
 				$key = $f3->get('key');
@@ -45,21 +63,21 @@ class Keys {
 		echo json_encode($data);
 	}
 
-	public function Exists($f3, $params) {
+	public static function Exists($f3, $params) {
 		$count = $f3->get('key')->count(array('@project_id=? and @key=?', $params['project_id'], $params['key']));
 		$data = array();
 		$data['result'] = $count == 1;
 		echo json_encode($data);
 	}
 
-	public function Count($f3, $params) {
+	public static function Count($f3, $params) {
 		$count = $f3->get('key')->count(array('@project_id=?', $params['project_id']));
 		$data = array();
 		$data['count'] = $count;
 		echo json_encode($data);
 	}
 
-	public function Get($f3, $params) {
+	public static function Get($f3, $params) {
 		$key = $f3->get('key');
 		$key->load(array('@project_id=? and @key=?', $params['project_id'], $params['key']));
 
@@ -69,7 +87,7 @@ class Keys {
 		echo json_encode($data);
 	}
 
-	public function GetAll($f3, $params) {
+	public static function GetAll($f3, $params) {
 		$keys = $f3->get('key')->find(array('@project_id=?', $params['project_id']));
 
 		$data = array();
@@ -86,7 +104,7 @@ class Keys {
 		echo json_encode($data);
 	}
 
-	public function Delete($f3, $params) {
+	public static function Delete($f3, $params) {
 		$keys = $f3->get('key')->find(array('@project_id=? and in_array(@key, ?)', $f3->get('REQUEST.project_id'), $f3->get('REQUEST.keys')));
 		$count = count($keys);
 		foreach ($keys as $key) {

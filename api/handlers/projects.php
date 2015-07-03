@@ -1,19 +1,19 @@
 <?php
 class Projects {
 
-	public function ValidateProjectTitle($title) {
+	public static function ValidateProjectTitle($title) {
 		return array('result' => strlen(trim($title)) > 0, 'error' => "Invalid project title");
 	}
 
-	public function ValidateProjectId($id) {
+	public static function ValidateProjectId($id) {
 		return array('result' => ctype_digit($id) || is_int($id), 'error' => "Invalid project ID");
 	}
 
-	public function Create($f3, $params) {
+	public static function Create($f3, $params) {
 		$data = array();
 
 		// validate title
-		$validation = $this->ValidateProjectTitle($f3->get('REQUEST.project.title'));
+		$validation = Projects::ValidateProjectTitle($f3->get('REQUEST.project.title'));
 		if (!$validation['result']) {
 			$data['error'] = $validation['error'];
 			echo json_encode($data);
@@ -35,11 +35,11 @@ class Projects {
 		echo json_encode($data);
 	}
 
-	public function Exists($f3, $params) {
+	public static function Exists($f3, $params) {
 		$data = array();
 
 		// validate project id
-		$validation = $this->ValidateProjectId($params['project_id']);
+		$validation = Projects::ValidateProjectId($params['project_id']);
 		if (!$validation['result']) {
 			$data['error'] = $validation['error'];
 			echo json_encode($data);
@@ -51,11 +51,11 @@ class Projects {
 		echo json_encode($data);
 	}
 
-	public function Get($f3, $params) {
+	public static function Get($f3, $params) {
 		$data = array();
 
 		// validate project id
-		$validation = $this->ValidateProjectId($params['project_id']);
+		$validation = Projects::ValidateProjectId($params['project_id']);
 		if (!$validation['result']) {
 			$data['error'] = $validation['error'];
 			echo json_encode($data);
@@ -81,7 +81,7 @@ class Projects {
 		echo json_encode($data);
 	}
 
-	public function GetAll($f3, $params) {
+	public static function GetAll($f3, $params) {
 		$project = $f3->get('project');
 		$projects = $project->find();
 		$data = array();
@@ -102,11 +102,11 @@ class Projects {
 		echo json_encode($data);
 	}
 
-	public function Update($f3, $params) {
+	public static function Update($f3, $params) {
 		$data = array();
 
 		// validate project id
-		$validation = $this->ValidateProjectId($f3->get('REQUEST.project.id'));
+		$validation = Projects::ValidateProjectId($f3->get('REQUEST.project.id'));
 		if (!$validation['result']) {
 			$data['error'] = $validation['error'];
 			echo json_encode($data);
@@ -114,7 +114,7 @@ class Projects {
 		}
 
 		// validate project title
-		$validation = $this->ValidateProjectTitle($f3->get('REQUEST.project.title'));
+		$validation = Projects::ValidateProjectTitle($f3->get('REQUEST.project.title'));
 		if (!$validation['result']) {
 			$data['error'] = $validation['error'];
 			echo json_encode($data);
@@ -144,11 +144,11 @@ class Projects {
 		echo json_encode($data);
 	}
 
-	public function Delete($f3, $params) {
+	public static function Delete($f3, $params) {
 		$data = array();
 
 		// validate project id
-		$validation = $this->ValidateProjectId($f3->get('REQUEST.project.id'));
+		$validation = Projects::ValidateProjectId($f3->get('REQUEST.project.id'));
 		if (!$validation['result']) {
 			$data['error'] = $validation['error'];
 			echo json_encode($data);
