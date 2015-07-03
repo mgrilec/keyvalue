@@ -34,7 +34,7 @@ class Api {
 	}
 
 	public function project_create($project_title, $project_description) {
-		return $this->post('projects/create', array("project_title" => $project_title, "project_description" => $project_description))['id'];
+		return $this->post('projects/create', array("project" => array("title" => $project_title, "description" => $project_description)))['result'];
 	}
 
 	public function project_update($project) {
@@ -42,7 +42,7 @@ class Api {
 	}
 
 	public function project_delete($project_id) {
-		return $this->post('projects/delete', array("project_id" => $project_id))['result'];
+		return $this->post('projects/delete', array("project" => array("id" => $project_id)))['result'];
 	}
 
 	public function keys_set($project_id, $keys, $values) {

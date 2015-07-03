@@ -96,7 +96,7 @@ class Projects {
 			unset($row['_id']);
 
 			// add row to data
-			$data['data'][] = $row;
+			$data['result'][] = $row;
 		}
 
 		echo json_encode($data);
