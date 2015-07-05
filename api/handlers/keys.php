@@ -3,11 +3,13 @@
 class Keys {
 
 	public static function ValidateKey($key) {
-		return !empty($key);
+		// match all of type a_bc.ab_c.abc
+		// don't match .asdf or asd..as
+		return array('result' => !empty($key) && preg_match("/^(\w|\w\.\w)+$/", $key), 'error' => "Invalid key");
 	}
 
 	public static function ValidateValue($value) {
-		return !empty($value);
+		return array('result' => !empty($value), 'error' => "Invalid value");
 	}
 
 	public static function Set($f3, $params) {
@@ -17,7 +19,7 @@ class Keys {
 		$values = $f3->get('REQUEST.values');
 
 		// validate project id
-		$validation = Projects::ValidateProjectId($f3->get('REQUEST.project_id'));
+		$validation = Projects::ValidateProjectId($f3->get('REQUEST.project.id'));
 		if (!$validation['result']) {
 			$data['error'] = $validation['error'];
 			echo json_encode($data);
@@ -25,7 +27,7 @@ class Keys {
 		}
 
 		// get project
-		$projectMapper = $f3->get('project')->load(array('@id=?', $f3->get('REQUEST.project_id')));
+		$projectMapper = $f3->get('project')->load(array('@id=?', $f3->get('REQUEST.project.id')));
 
 		// check if project exists
 		if ($projectMapper->dry()) {
@@ -40,16 +42,18 @@ class Keys {
 			for ($index = 0; $index < $total; $index++) {
 
 				// validate key
-				if (!Keys::ValidateKey($keys[$index]))
+				$validation = Keys::ValidateKey($keys[$index]);
+				if (!$validation['result'])
 					continue;
 
-				// validate value
-				if (!Keys::ValidateValue($values[$index]))
+				// validate key
+				$validation = Keys::ValidateValue($values[$index]);
+				if (!$validation['result'])
 					continue;
 
 				$key = $f3->get('key');
 				$key->reset();
-				$key->project_id = $f3->get('REQUEST.project_id');
+				$key->project_id = $f3->get('REQUEST.project.id');
 				$key->key = $keys[$index];
 				$key->value = $values[$index];
 				$key->save();
@@ -58,7 +62,7 @@ class Keys {
 		}
 
 		$data = array();
-		$data['count'] = $count;
+		$data['result'] = $count;
 
 		echo json_encode($data);
 	}
@@ -73,7 +77,7 @@ class Keys {
 	public static function Count($f3, $params) {
 		$count = $f3->get('key')->count(array('@project_id=?', $params['project_id']));
 		$data = array();
-		$data['count'] = $count;
+		$data['result'] = $count;
 		echo json_encode($data);
 	}
 
@@ -82,7 +86,7 @@ class Keys {
 		$key->load(array('@project_id=? and @key=?', $params['project_id'], $params['key']));
 
 		$data = array();
-		$data['data'] = $key->value;
+		$data['result'] = $key->value;
 
 		echo json_encode($data);
 	}
@@ -91,21 +95,21 @@ class Keys {
 		$keys = $f3->get('key')->find(array('@project_id=?', $params['project_id']));
 
 		$data = array();
-		$data['data'] = array();
+		$data['result'] = array();
 		foreach ($keys as $key) {
 
 			// turn mapper to array
 			$row = $key->cast();
 			
 			// add row to data
-			$data['data'][$row['key']] = $row['value'];
+			$data['result'][$row['key']] = $row['value'];
 		}
 
 		echo json_encode($data);
 	}
 
 	public static function Delete($f3, $params) {
-		$keys = $f3->get('key')->find(array('@project_id=? and in_array(@key, ?)', $f3->get('REQUEST.project_id'), $f3->get('REQUEST.keys')));
+		$keys = $f3->get('key')->find(array('@project_id=? and in_array(@key, ?)', $f3->get('REQUEST.project.id'), $f3->get('REQUEST.keys')));
 		$count = count($keys);
 		foreach ($keys as $key) {
 			$key->erase();

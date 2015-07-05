@@ -46,19 +46,19 @@ class Api {
 	}
 
 	public function keys_set($project_id, $keys, $values) {
-		return $this->post('keys/set', array("project_id" => $project_id, "keys" => $keys, "values" => $values))['count'];
+		return $this->post('keys/set', array("project" => array('id' => $project_id), "keys" => $keys, "values" => $values))['result'];
 	}
 
 	public function keys_delete($project_id, $keys) {
-		return $this->post('keys/delete', array("project_id" => $project_id, "keys" => $keys))['count'];
+		return $this->post('keys/delete', array("project" => array('id' => $project_id), "keys" => $keys))['count'];
 	}
 
 	public function keys_count($project_id) {
-		return $this->get('keys/'.$project_id.'/count')['count'];
+		return $this->get('keys/'.$project_id.'/count')['result'];
 	}
 
 	public function keys_get_all($project_id) {
-		return $this->get('keys/'.$project_id)['data'];
+		return $this->get('keys/'.$project_id)['result'];
 	}
 }
 
