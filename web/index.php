@@ -9,7 +9,6 @@ $f3->route('GET /',
 
     	// get all projects
     	$projects = $f3->get('api')->projects();
-    	array_unshift($projects, array('create' => true));
 
     	// get key count
         for ($index = 0 ; $index < count($projects); $index++) {
@@ -17,13 +16,7 @@ $f3->route('GET /',
             $projects[$index]['count'] = $count;
         }
 
-    	$rows = array();
-    	for ($i = 0; $i < count($projects); $i++) {
-    		$row = floor($i / 3);
-    		$rows[$row][] = $projects[$i];
-    	}
-
-        echo $f3->get('template')->render('projects.html', 'text/html', array('rows' => $rows));
+        echo $f3->get('template')->render('projects.html', 'text/html', array('projects' => $projects));
     }
 );
 

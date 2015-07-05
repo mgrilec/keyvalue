@@ -23,8 +23,11 @@ class Projects {
 		$projectMapper = $f3->get('project');
 
 		// create new project entry
+		$projectMapper->reset();
 		$projectMapper->title = $f3->get('REQUEST.project.title');
 		$projectMapper->description = $f3->get('REQUEST.project.description');
+		$projectMapper->save();
+		
 		$projectMapper->id = optimus_encode($f3, $projectMapper->_id);
 		$projectMapper->save();
 
