@@ -25,8 +25,7 @@ class Api {
 	}
 
 	public function projects() {
-		$projects = $this->get('projects');
-		return $projects ? $projects['result'] : projects();
+		return $this->get('projects')['result'];
 	}
 
 	public function project_get($project_id) {
