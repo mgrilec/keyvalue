@@ -78,6 +78,14 @@ $f3->route('GET /test',
 		    include $filename;
 		}
 
+		// sort test by category
+		$f3->set('categories', array());
+		foreach ($f3->get('tests') as $test) {
+			$f3->push('categories.' . $test['category'], $test);
+		}
+
+		$f3->clear('tests');
+
 		// display results
 		$template = new Template;
 		echo $template->render('ui/tests.html');

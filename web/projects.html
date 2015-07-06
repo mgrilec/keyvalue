@@ -10,113 +10,135 @@
     <link href="css/style.css" type="text/css" rel="stylesheet" media="screen,projection"/>
   </head>
   <body>
-    <header>
-      <nav class="light-blue lighten-1" role="navigation">
-        <div class="nav-wrapper container">
-          <a id="logo-container" href="." class="brand-logo">key value</a>
+
+    <!-- Navbar -->
+    <div class="navbar-fixed">
+      <nav class="nav-wrapper blue-grey">
+        <div class="container">
+          <a id="logo-container" href="#" class="brand-logo">KEY VALUE</a>
+          <div class="right">
+            <a href="#" class="waves-effect waves-light deep-orange btn">login</a>
+          </div>
+          <ul class="right hide-on-med-and-down">
+            <li><a href="/docs/main">ABOUT</a></li>
+            <li><a href="/pricing">DOCUMENTATION</a></li>
+            <li><a href="/about">HELP</a></li>
+          </ul>
+          <ul id="nav-mobile" class="side-nav">
+            <li><a href="#">Navbar Link</a></li>
+            <a href="#" class="waves-effect waves-light btn">login</a>
+          </ul>
+          <a href="#" data-activates="nav-mobile" class="button-collapse"><i class="material-icons">menu</i></a>
         </div>
       </nav>
-    </header>
-    <main>
+    </div>
+
+    <!-- Container -->
     <div class="container">
-      <div class="section">
-        <h2>Projects</h2>
+
+      <!-- FAB -->
+      <div class="fixed-action-btn" style="bottom: 45px; right: 48px;">
+        <!-- FAB is Modal trigger -->
+        <a class="btn-floating btn-large deep-orange tooltipped modal-trigger" data-position="left" data-delay="50" data-tooltip="CREATE NEW PROJECT" href="#modal1">
+          <i class="large material-icons">mode_edit</i>
+        </a>
+        <!-- <ul>
+          <li><a class="btn-floating red"><i class="material-icons">insert_chart</i></i></a></li>
+          <li><a class="btn-floating yellow darken-1"><i class="material-icons">format_quote</i></a></li>
+          <li><a class="btn-floating green"><i class="material-icons">publish</i></a></li>
+          <li><a class="btn-floating blue"><i class="material-icons">attach_file</i></a></li>
+        </ul> -->
       </div>
-      <div class="divider"></div>
-      <div class="section">
-        <repeat group="{{ @rows }}" value="{{ @row }}">
-        <div class="row">
-          <repeat group="{{ @row }}" value="{{ @project }}">
-          <div class="col s4">
-            <div class="card">
-              <check if="{{ @project.create }}">
-              <true>
-                <div class="card-content">
-                  <div class="row">
-                    <div class="col s12">
-                      <h5>New Project</h5>
-                    </div>
-                  </div>
-                  <div class="row">
-                    <div class="col s12 grey-text lighten-2-text">
-                      Project Description
-                    </div>
-                  </div>
-                </div>
-                <div class="card-action">
-                  <a class="modal-trigger" href="#create">Create</a>
-                </div>
-              </true>
-              <false>
-              <div class="card-content">
-                <div class="row valign-wrapper">
-                  <div class="col s12">
-                    <h5>{{ @project.title }} <span class="badge new">{{ @project.count == 0 ? 'Project empty' : '' }}</span></h5>
-                  </div>
-                </div>
-                <div class="row">
-                  <div class="col s12 grey-text lighten-2-text">
-                    {{ @project.description }}
-                  </div>
-                </div>
-                
-              </div>
-              <div class="card-action">
-                <a href="{{ @project.id }}">Edit</a>
-                <a href="{{ @project.id }}/delete">Delete</a>
-              </div>
-              </false>
-              </check>
-            </div>
-          </div>
-          </repeat>
-        </div>
-        </repeat>
-      </div>
-    </div>
-    <div id="create" class="modal">
-      <form action="create" method="post">
+
+      <!-- Modal Structure -->
+      <div id="modal1" class="modal">
         <div class="modal-content">
-          <div class="row">
-            <div class="col s12">
-              <h4>Create new project</h4>
+          <form action="create" method="post">
+
+            <h5>CREATE NEW PROJECT</h5>
+            <div class="divider"></div>
+
+            <div class="section">
+
+              <div class="row">
+                <div class="input-field col s12">
+                  <input id="project_title" type="text" name="project_title" class="validate" length="16">
+                  <label for="title">Project title</label>
+                </div>
+              </div>
+
+              <div class="row">
+                <div class="input-field col s12">
+                  <textarea id="project_description" class="materialize-textarea" name="project_description" class="validate" length="120"></textarea>
+                  <label for="description">Project description</label>
+                </div>
+              </div>
+
+              <!-- Modal Form Submint buttom -->
+              <div class="modal-footer">
+                <button type="submit" class="modal-action modal-close btn deep-orange waves-effect waves-light">Send</button>
+              </div>
+
             </div>
-          </div>
-          <div class="row">
-            <div class="input-field col s12">
-              <input id="title" type="text" name="project_title" class="validate">
-              <label for="title">Project title</label>
+
+          </form>
+        </div> <!-- modal-content END -->
+      </div> <!-- Modal1 END -->
+
+      <!-- Cards, Cards, Cards -->
+      <div id="cards" class="section">
+        <div class="row">
+          <repeat group="{{ @projects }}" value="{{ @project }}">
+            <!-- The Card 1 -->
+            <div class="col s12 m6 l4">
+              <div class="card hoverable blue-grey">
+                <!-- Card content -->
+                <div class="card-content">
+                  <!-- Card title -->
+                  <span class="card-title">
+                    <h5 class="truncate">{{ @project.title }}
+                      <check if="{{ @project.count > 0 }}">
+                        <true>
+                          
+                        </true>
+                        <false>
+                          <span class="badge blue-grey lighten-4 blue-grey-text text-darken-2">Project empty</span>
+                        </false>
+                      </check>
+                    </h5>
+                  </span>
+                  <div class="section">
+                    <p class="white-text">{{ @project.description }}</p>
+                  </div>
+                </div><!-- Card content - END -->
+                <!-- Card action footer -->
+                <div class="card-action white">
+                  <a href="{{ @project.id }}" class="waves-effect waves-teal btn-flat blue-grey-text"><i class="material-icons left">mode_edit</i>EDIT</a>
+                  <a href="{{ @project.id }}/delete" class="waves-effect waves-red btn-flat right blue-grey-text"><i class="material-icons left">delete</i>DELETE</a>
+                </div>
+                <!-- End of Card -->
+              </div>
             </div>
-          </div>
-          <div class="row">
-            <div class="input-field col s12">
-              <input id="description" type="text" name="project_description" class="validate">
-              <label for="description">Project description</label>
-            </div>
-          </div>
-        </div>
-        <div class="modal-footer">
-          <button class="modal-action modal-close waves-effect waves-green btn-flat" type="submit">Create</button>
-        </div>
-      </form>
-    </div>
-    </main>
-    <footer class="page-footer orange">
-      <div class="container">
-      </div>
-      <div class="footer-copyright">
-        <div class="container">
-          Made by <a class="orange-text text-lighten-3" href="http://materializecss.com">Materialize</a>
-        </div>
-      </div>
-    </footer>
-    <!--  Scripts-->
-    <script src="js/jquery.min.js"></script>
-    <script src="js/materialize.js"></script>
-    <script type="text/javascript">
-    $(document).ready(function() {
-    $('.modal-trigger').leanModal();
-    });
+            <!-- End of The Card 1 -->
+
+          </repeat>
+        </div><!-- Row - END -->
+      </div><!-- Cards, Cards, Cards - END -->
+
+    </div><!-- Container - END -->
+
+    <!--Import jQuery before materialize.js-->
+    <script type="text/javascript" src="js/jquery.min.js"></script>
+    <script type="text/javascript" src="js/materialize.min.js"></script>
+    <script type="text/javascript" src="js/masonry.min.js"></script>
+    <script>
+      $(document).ready(function(){
+        $('#cards .row').masonry({
+          itemSelector: '#cards .col',
+        });
+        $('.modal-trigger').leanModal();
+        $('.button-collapse').sideNav();
+      });
     </script>
   </body>
 </html>

@@ -26,15 +26,15 @@ class Api {
 
 	public function projects() {
 		$projects = $this->get('projects');
-		return $projects ? $projects['data'] : projects();
+		return $projects ? $projects['result'] : projects();
 	}
 
 	public function project_get($project_id) {
-		return $this->get('projects/'.$project_id)['data'];
+		return $this->get('projects/'.$project_id)['result'];
 	}
 
 	public function project_create($project_title, $project_description) {
-		return $this->post('projects/create', array("project_title" => $project_title, "project_description" => $project_description))['id'];
+		return $this->post('projects/create', array("project" => array("title" => $project_title, "description" => $project_description)))['result'];
 	}
 
 	public function project_update($project) {
@@ -42,19 +42,23 @@ class Api {
 	}
 
 	public function project_delete($project_id) {
-		return $this->post('projects/delete', array("project_id" => $project_id))['result'];
+		return $this->post('projects/delete', array("project" => array("id" => $project_id)))['result'];
 	}
 
-	public function keys_set($project_id, $keys) {
-		return $this->post('keys/set', array("keys" => $keys))['count'];
+	public function keys_set($project_id, $keys, $values) {
+		return $this->post('keys/set', array("project" => array('id' => $project_id), "keys" => $keys, "values" => $values))['result'];
+	}
+
+	public function keys_delete($project_id, $keys) {
+		return $this->post('keys/delete', array("project" => array('id' => $project_id), "keys" => $keys))['count'];
 	}
 
 	public function keys_count($project_id) {
-		return $this->get('keys/'.$project_id.'/count')['count'];
+		return $this->get('keys/'.$project_id.'/count')['result'];
 	}
 
 	public function keys_get_all($project_id) {
-		return $this->get('keys/'.$project_id)['data'];
+		return $this->get('keys/'.$project_id)['result'];
 	}
 }
 
