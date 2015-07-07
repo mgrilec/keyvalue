@@ -16,7 +16,7 @@ $f3->route('GET /',
             $projects[$index]['count'] = $count;
         }
 
-        echo $f3->get('template')->render('projects.html', 'text/html', array('projects' => $projects));
+        echo $f3->get('template')->render('template.html', 'text/html', array('projects' => $projects, 'content' => 'projects.html', 'js' => array('js/masonry.min.js', 'js/projects.js')));
     }
 );
 
