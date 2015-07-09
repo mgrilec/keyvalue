@@ -24,41 +24,50 @@
   </header>
   <main>
     <div class="container">
-      <div class="row">
-        <div class="col s12">
-          <ul class="collapsible popout" data-collapsible="accordion">
-            <repeat group="{{ @tests }}" value="{{ @test_data }}">
-                <li>
-                  <div class="collapsible-header">
-                    <check if="{{ @test_data.status }}">
-                      <true><i class="material-icons">done</i></true>
-                      <false><i class="material-icons">not_interested</i></false>
-                    </check>
-                    {{ @test_data.name }}
-                  </div>
-                  <div class="collapsible-body">
-                    <table>
-                      <tbody>
-                        <repeat group="{{ @test_data.results }}" value="{{ @result }}">
-                          <tr>
-                            <td>{{ @result.text }}</td>
-                            <td>{{ @result.source }}</td>
-                            <td>
-                              <check if="{{ @result.status }}">
-                                <true>PASSED</true>
-                                <false>FAILED</false>
-                              </check>
-                            </td>
-                          </tr>
-                        </repeat>
-                      </tbody>
-                    </table>
-                  </div>
-                </li>  
-            </repeat>
-          </ul>
+      <repeat group="{{ @categories }}" key="{{ @category }}" value="{{ @tests }}">
+        <div class="section">
+          <div class="row">
+            <div class="col s12">
+              <h5>{{ @category }}</h5>
+            </div>
+          </div>
+          <div class="row">
+            <div class="col s12">
+              <ul class="collapsible popout" data-collapsible="accordion">
+                <repeat group="{{ @tests }}" value="{{ @test_data }}">
+                  <li>
+                    <div class="collapsible-header">
+                      <check if="{{ @test_data.status }}">
+                        <true><i class="material-icons">done</i></true>
+                        <false><i class="material-icons">not_interested</i></false>
+                      </check>
+                      {{ @test_data.name }}
+                    </div>
+                    <div class="collapsible-body">
+                      <table>
+                        <tbody>
+                          <repeat group="{{ @test_data.results }}" value="{{ @result }}">
+                            <tr>
+                              <td>{{ @result.text }}</td>
+                              <td>{{ @result.source }}</td>
+                              <td>
+                                <check if="{{ @result.status }}">
+                                  <true>PASSED</true>
+                                  <false>FAILED</false>
+                                </check>
+                              </td>
+                            </tr>
+                          </repeat>
+                        </tbody>
+                      </table>
+                    </div>
+                  </li>  
+                </repeat>
+              </ul>
+            </div>
+          </div>
         </div>
-      </div>
+      </repeat>
     </div>
   </main>
 	<footer class="page-footer orange">

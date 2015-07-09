@@ -6,19 +6,73 @@
  * Made By MaterializeCSS.com
  */
 
-.icon-block {
-  padding: 0 15px;
+ /* Materialze css tweaks */
+body { background-color: #455a64; }
+/* Heading (h5) margin tweak */
+h5 { 
+margin: 0 0 0.656rem 0;
+padding-right: 32%;
 }
-.icon-block .material-icons {
-	font-size: inherit;
+.modal .modal-footer .btn {
+  margin: 6px;
 }
+.card .card-action a {
+  margin-right: 0;
+  padding: 0px 1em;
+}
+/* Badge tweak */
+span.badge {
+font-size: 0.8rem;
+border-radius: 2px;
+right: 20px;
+/*margin: -54px 0px 0px;*/ /* Remove if h5 tage have class="truncate" */
+}
+/* Bigger Conteiner width */
+.container {
+margin: 0 auto;
+max-width: 1280px;
+width: 95%; }
 
-body {
-	display: flex;
-	min-height: 100vh;
-	flex-direction: column;
-}
+@media only screen and (min-width : 601px) {
+.container {
+  width: 92.5%; } }
 
-main {
-	flex: 1 0 auto;
+@media only screen and (min-width : 993px) {
+.container {
+  width: 90%; } 
+}
+/* ---------------------- */
+
+/* Form inputs tweak */
+.input-field input[type="text"] { font-size: 1.6rem; }
+/* label color */
+.input-field label,
+.input-field textarea.materialize-textarea {
+color: #000;
+}
+/* label focus color */
+.input-field input[type=text]:focus + label,
+.input-field textarea.materialize-textarea:focus + label {
+color: #FF5722;
+}
+/* label underline focus color */
+.input-field input[type=text]:focus,
+.input-field textarea.materialize-textarea:focus {
+border-bottom: 1px solid #FF5722;
+box-shadow: 0 1px 0 0 #FF5722;
+}
+/* valid color */
+.input-field input[type=text].valid {
+border-bottom: 1px solid #000;
+box-shadow: 0 1px 0 0 #000;
+}
+/* invalid color */
+.input-field input[type=text].invalid {
+border-bottom: 1px solid #b71c1c ;
+box-shadow: 0 1px 0 0 #b71c1c ;
+background-color: #ffebee;
+}
+/* icon prefix focus color */
+.input-field .prefix.active {
+color: #000;
 }
