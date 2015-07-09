@@ -14,7 +14,7 @@ var api = (function($) {
 	};
 
 	api.projects = function(success) {
-		return get('projects', success);
+		return get('projects', function(data) { success(data['result']) });
 	};
 
 	return api;
