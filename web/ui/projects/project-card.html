@@ -5,14 +5,9 @@
       <!-- Card title -->
       <span class="card-title">
         <h5 class="truncate">{{ project.title }}
-        <check if="{{ @project.count > 0 }}">
-        <true>
-          
-        </true>
-        <false>
-        <span class="badge blue-grey lighten-4 blue-grey-text text-darken-2">Project empty</span>
-        </false>
-        </check>
+        {{#if project.empty}}
+          <span class="badge blue-grey lighten-4 blue-grey-text text-darken-2">Project empty</span>
+        {{/if}}
         </h5>
       </span>
       <div class="section">
@@ -21,8 +16,8 @@
       </div><!-- Card content - END -->
       <!-- Card action footer -->
       <div class="card-action white">
-        <a href="{{ project.id }}" class="waves-effect waves-teal btn-flat blue-grey-text"><i class="material-icons left">mode_edit</i>EDIT</a>
-        <a href="{{ project.id }}/delete" class="waves-effect waves-red btn-flat right blue-grey-text"><i class="material-icons left">delete</i>DELETE</a>
+        <a id="{{ project.id }}" class="edit waves-effect waves-teal btn-flat blue-grey-text"><i class="material-icons left">mode_edit</i>EDIT</a>
+        <a id="{{ project.id }}" class="delete waves-effect waves-red btn-flat right blue-grey-text"><i class="material-icons left">delete</i>DELETE</a>
       </div>
       <!-- End of Card -->
     </div>
