@@ -92,7 +92,7 @@ class Keys {
 	}
 
 	public static function GetAll($f3, $params) {
-		$keys = $f3->get('key')->find(array('@project_id=?', $params['project_id']));
+		$keys = $f3->get('key')->find(array('@project_id=?', $params['project_id']), array('order' => 'key'));
 
 		$data = array();
 		$data['result'] = array();

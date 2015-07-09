@@ -1,28 +1,4 @@
-<!DOCTYPE html>
-<html lang="en">
-  <head>
-    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
-    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1.0"/>
-    <title>kv</title>
-    <!-- CSS  -->
-    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
-    <link href="css/materialize.css" type="text/css" rel="stylesheet" media="screen,projection"/>
-    <link href="css/style.css" type="text/css" rel="stylesheet" media="screen,projection"/>
-  </head>
-  <body>
-    <header>
-      <nav class="light-blue lighten-1" role="navigation">
-        <div class="nav-wrapper container">
-          <a id="logo-container" href="." class="brand-logo">key value</a>
-        </div>
-      </nav>
-      <div class="section no-pad-bot" id="index-banner">
-        <div class="container" id="title">
-        </div>
-      </div>
-    </header>
-    <main>
-    <div class="container" id ="content">
+
       <div class="section" id ="project">
         <form action="update" method="post">
           <div class="row">
@@ -53,36 +29,35 @@
       </div>
       <div class="section" id ="data">
         <repeat group="{{ @project.keys }}" key="{{ @key }}" value="{{ @value }}" counter="{{ @index }}">
-        <div class="row">
-          <div class="col s2 input-field">
-            <input id="key_{{@index}}_new" type="text" class="validate" name="keys[{{@key}}][key]" value="{{@key}}">
-            <label for="key_{{@index}}">Key</label>
-          </div>
-          <div class="col s8 input-field">
-            <input placeholder="Try clicking on something!" id="value_{{@index}}" type="text" class="validate" name="keys[{{@key}}][value]"  value="{{@value}}">
-            <label for="value_{{@index}}">Value</label>
-          </div>
-          <div class="col s2 input-field">
-            <a class="btn-floating btn red"><i class="material-icons">delete</i></a>
-          </div>
-        </div>
+          <form action="{{@project.id}}/delete_key" method="post">
+            <div class="row">
+              <div class="col s2 input-field">
+                <input id="key_{{@index}}_new" type="text" class="validate" name="keys[{{@key}}][key]" value="{{@key}}">
+                <label for="key_{{@index}}">Key</label>
+              </div>
+              <div class="col s8 input-field">
+                <input placeholder="Try clicking on something!" id="value_{{@index}}" type="text" class="validate" name="keys[{{@key}}][value]"  value="{{@value}}">
+                <label for="value_{{@index}}">Value</label>
+              </div>
+              <div class="col s2 input-field">
+                  <button class="btn-floating btn red" type="submit"><i class="material-icons">delete</i></button>
+              </div>
+            </div>
+          </form>
         </repeat>
-        <div class="row">
-          <div class="col s2 input-field">
-            <input placeholder="player_enter" type="text" class="validate" name="new_keys[]">
-            <label>Key</label>
+        <form action="{{@project.id}}/add_key" method="post">
+          <div class="row">
+            <div class="col s2 input-field">
+              <input placeholder="player_enter" type="text" class="validate" name="keys[]">
+              <label>Key</label>
+            </div>
+            <div class="col s8 input-field">
+              <input placeholder="Tonight we dine in hell!" type="text" class="validate" name="values[]">
+              <label>Value</label>
+            </div>
+            <div class="col s2 input-field">
+              <button class="btn-floating btn green" type="submit"><i class="material-icons">add</i></button>
+            </div>
           </div>
-          <div class="col s8 input-field">
-            <input placeholder="Tonight we dine in hell!" type="text" class="validate" name="new_values[]">
-            <label>Value</label>
-          </div>
-        </div>
+        </form>
       </div>
-    </div>
-    </main>
-    <!--  Scripts-->
-    <script src="js/jquery.min.js"></script>
-    <script src="js/materialize.js"></script>
-    <script src="js/init.js"></script>
-  </body>
-</html>
