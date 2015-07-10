@@ -1,7 +1,7 @@
 <?php
 
 $f3 = require('fatfree/lib/base.php');
-$f3->set('api', new Api('../api/'));
+$f3->set('api', new Api('http://box.mgrilec.com/keyvalue/api/'));
 $f3->set('template', Template::instance());
 
 $f3->route('GET /',
