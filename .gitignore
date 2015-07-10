@@ -3,3 +3,8 @@ api/tmp/
 api/db/
 unity/Library/
 unity/Temp/
+unity/obj/
+*.csproj
+*.sln
+*.suo
+*.cache
