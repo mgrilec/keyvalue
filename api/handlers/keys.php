@@ -81,6 +81,15 @@ class Keys {
 	}
 
 	public static function Exists($f3, $params) {
+
+		// validate project id
+		$validation = Projects::ValidateProjectId($params['project_id']);
+		if (!$validation['result']) {
+			$data['error'] = $validation['error'];
+			echo json_encode($data);
+			return;
+		}
+
 		$count = $f3->get('key')->count(array('@project_id=? and @key=?', $params['project_id'], $params['key']));
 		$data = array();
 		$data['result'] = $count == 1;
@@ -88,6 +97,15 @@ class Keys {
 	}
 
 	public static function Count($f3, $params) {
+
+		// validate project id
+		$validation = Projects::ValidateProjectId($params['project_id']);
+		if (!$validation['result']) {
+			$data['error'] = $validation['error'];
+			echo json_encode($data);
+			return;
+		}
+
 		$count = $f3->get('key')->count(array('@project_id=?', $params['project_id']));
 		$data = array();
 		$data['result'] = $count;
@@ -95,6 +113,15 @@ class Keys {
 	}
 
 	public static function Get($f3, $params) {
+
+		// validate project id
+		$validation = Projects::ValidateProjectId($params['project_id']);
+		if (!$validation['result']) {
+			$data['error'] = $validation['error'];
+			echo json_encode($data);
+			return;
+		}
+
 		$key = $f3->get('key');
 		$key->load(array('@project_id=? and @key=?', $params['project_id'], $params['key']));
 
