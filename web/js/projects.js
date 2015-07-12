@@ -2,7 +2,7 @@ $(document).ready(function(){
 
   	// masonry
     var grid = $('#projects').masonry({
-      itemSelector: '#project',
+      itemSelector: '.project',
     });
 
     // modal
@@ -31,7 +31,6 @@ $(document).ready(function(){
     };
 
     var remove = function(card) {
-    	card.remove();
     	grid.masonry('remove', card);
     	grid.masonry();
     }
