@@ -2,6 +2,9 @@
 
 $f3 = require("include/fatfree/lib/base.php");
 
+// set debug level
+$f3->set('DEBUG',3);
+
 // optimus
 require("include/optimus.php");
 $f3->set('optimus', new Optimus(14278211, 48684651, 1792568627));

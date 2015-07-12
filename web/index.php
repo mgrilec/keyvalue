@@ -1,9 +1,14 @@
 <?php
 
 $f3 = require('fatfree/lib/base.php');
+
+// set debug level
+$f3->set('DEBUG',3);
+
 $f3->set('api', new Api('../api/'));
 $f3->set('UI', './templates/');
 $f3->set('template', Template::instance());
+
 
 $f3->route('GET /',
     function($f3, $params) {
