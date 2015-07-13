@@ -1,0 +1,24 @@
+<div class="project col s12 m6 l4 ">
+  <div class="card hoverable {{ project.color }}">
+    <!-- Card content -->
+    <div class="card-content">
+      <!-- Card title -->
+      <span class="card-title">
+        <h5 class="truncate">{{ project.title }}
+        {{#if project.empty}}
+          <span class="badge blue-grey lighten-4 blue-grey-text text-darken-2">Project empty</span>
+        {{/if}}
+        </h5>
+      </span>
+      <div class="section">
+        <p class="white-text">{{ project.description }}</p>
+      </div>
+      </div><!-- Card content - END -->
+      <!-- Card action footer -->
+      <div class="card-action white">
+        <a href="{{ project.id }}/" class="edit waves-effect waves-teal btn-flat blue-grey-text"><i class="material-icons left">mode_edit</i>EDIT</a>
+        <a id="{{ project.id }}" class="delete waves-effect waves-red btn-flat right blue-grey-text"><i class="material-icons left">delete</i>DELETE</a>
+      </div>
+      <!-- End of Card -->
+    </div>
+  </div>

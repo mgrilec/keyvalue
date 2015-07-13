@@ -26,6 +26,7 @@ class Projects {
 		$projectMapper->reset();
 		$projectMapper->title = $f3->get('REQUEST.project.title');
 		$projectMapper->description = $f3->get('REQUEST.project.description');
+		$projectMapper->color = $f3->get('REQUEST.project.color');
 		$projectMapper->save();
 		
 		$projectMapper->id = optimus_encode($f3, $projectMapper->_id);

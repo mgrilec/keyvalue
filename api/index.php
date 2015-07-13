@@ -2,25 +2,14 @@
 
 $f3 = require("include/fatfree/lib/base.php");
 
-// optimus
-require("include/optimus.php");
-$f3->set('optimus', new Optimus(14278211, 48684651, 1792568627));
-function optimus_encode($f3, $id) 
-{
-	return $f3->get('optimus')->encode(hexdec(explode('.', $id)[0])); 
-}
+// read globals
+$f3->config('globals.ini');
 
-// database
-$db = new DB\Jig ('db/');
-$f3->set('project', new DB\Jig\Mapper($db, 'projects'));
-$f3->set('key', new DB\Jig\Mapper($db, 'keys'));
+// include config
+require("config.php");
 
-// autoload
-$f3->set('AUTOLOAD', 'handlers/');
-
-function project_exists($f3, $project_id) {
-	return $f3->get('project')->count(array('@id=?', $project_id)) > 0;
-}
+// read routes
+$f3->config('routes.ini');
 
 // home page
 $f3->route('GET /',
@@ -28,9 +17,6 @@ $f3->route('GET /',
         echo 'Hello, world!';
     }
 );
-
-// sets keys
-$f3->route('POST @key_set: /keys/set', 'Keys->Set');
 
 // check if a key exists
 $f3->route('GET @key_exists: /keys/@project_id/@key/exists', 'Keys->Exists');

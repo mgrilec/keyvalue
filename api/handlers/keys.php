@@ -52,11 +52,24 @@ class Keys {
 					continue;
 
 				$key = $f3->get('key');
-				$key->reset();
-				$key->project_id = $f3->get('REQUEST.project.id');
-				$key->key = $keys[$index];
-				$key->value = $values[$index];
-				$key->save();
+				$key->load(array('@project_id=? and @key=?', $f3->get('REQUEST.project.id'), $keys[$index]));
+
+				if ($key->dry()) {
+
+					// no key in db
+					$key->reset();
+					$key->project_id = $f3->get('REQUEST.project.id');
+					$key->key = $keys[$index];
+					$key->value = $values[$index];
+					$key->save();
+				} else {
+
+					// key already in db
+					$key->value = $values[$index];
+					$key->save();
+				}
+
+
 				$count++;
 			}
 		}
@@ -68,6 +81,15 @@ class Keys {
 	}
 
 	public static function Exists($f3, $params) {
+
+		// validate project id
+		$validation = Projects::ValidateProjectId($params['project_id']);
+		if (!$validation['result']) {
+			$data['error'] = $validation['error'];
+			echo json_encode($data);
+			return;
+		}
+
 		$count = $f3->get('key')->count(array('@project_id=? and @key=?', $params['project_id'], $params['key']));
 		$data = array();
 		$data['result'] = $count == 1;
@@ -75,6 +97,15 @@ class Keys {
 	}
 
 	public static function Count($f3, $params) {
+
+		// validate project id
+		$validation = Projects::ValidateProjectId($params['project_id']);
+		if (!$validation['result']) {
+			$data['error'] = $validation['error'];
+			echo json_encode($data);
+			return;
+		}
+
 		$count = $f3->get('key')->count(array('@project_id=?', $params['project_id']));
 		$data = array();
 		$data['result'] = $count;
@@ -82,6 +113,15 @@ class Keys {
 	}
 
 	public static function Get($f3, $params) {
+
+		// validate project id
+		$validation = Projects::ValidateProjectId($params['project_id']);
+		if (!$validation['result']) {
+			$data['error'] = $validation['error'];
+			echo json_encode($data);
+			return;
+		}
+
 		$key = $f3->get('key');
 		$key->load(array('@project_id=? and @key=?', $params['project_id'], $params['key']));
 
@@ -109,14 +149,21 @@ class Keys {
 	}
 
 	public static function Delete($f3, $params) {
-		$keys = $f3->get('key')->find(array('@project_id=? and in_array(@key, ?)', $f3->get('REQUEST.project.id'), $f3->get('REQUEST.keys')));
-		$count = count($keys);
-		foreach ($keys as $key) {
-			$key->erase();
+		$data = array();
+
+		// validate project id
+		$validation = Projects::ValidateProjectId($f3->get('REQUEST.project.id'));
+		if (!$validation['result']) {
+			$data['error'] = $validation['error'];
+			echo json_encode($data);
+			return;
 		}
 
-		$data = array();
-		$data['count'] = $count;
+		// erase all keys
+		$f3->get('key')->erase(array('@project_id=? and in_array(@key, ?)', $f3->get('REQUEST.project.id'), $f3->get('REQUEST.keys')));
+		
+
+		$data['result'] = true;
 		echo json_encode($data);
 	}
 }

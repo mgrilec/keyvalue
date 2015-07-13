@@ -1,3 +1,5 @@
 web/tmp/
 api/tmp/
 api/db/
+unity/Library/
+unity/Temp/

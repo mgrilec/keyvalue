@@ -2,9 +2,12 @@
 
 $test = new Test;
 
+// setup a project
+$project = array('title' => rand(), 'description' => rand(), 'color' => rand());
+
 // create a project
 $f3->set('QUIET', true);
-$f3->mock('POST @project_create', array('project' => array('title' => rand())));
+$f3->mock('POST @project_create', array('project' => $project));
 $f3->set('QUIET', false);
 
 $id = json_decode($f3->get('RESPONSE'), true)['result'];
@@ -14,10 +17,20 @@ $f3->set('QUIET', true);
 $f3->mock('GET @project_exists(@project_id='.$id.')');
 $f3->set('QUIET', false);
 
+// run test
 $response = json_decode($f3->get('RESPONSE'), true);
+$test->expect($response['result'], 'Project exists');
 
-// check if project exists
-$test->expect($response['result'], 'Create project');
+// see if it has the right fields
+$f3->set('QUIET', true);
+$f3->mock('GET @project_get(@project_id='.$id.')');
+$f3->set('QUIET', false);
+
+// run test
+$response = json_decode($f3->get('RESPONSE'), true);
+$new_project = $response['result'];
+
+$test->expect(!array_diff($project, $new_project), 'Project has same fields');
 
 // delete project
 $f3->set('QUIET', true);

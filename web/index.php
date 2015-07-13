@@ -1,22 +1,19 @@
 <?php
 
 $f3 = require('fatfree/lib/base.php');
+
+// set debug level
+$f3->set('DEBUG',3);
+
 $f3->set('api', new Api('../api/'));
+$f3->set('UI', './templates/');
 $f3->set('template', Template::instance());
+
 
 $f3->route('GET /',
     function($f3, $params) {
 
-    	// get all projects
-    	$projects = $f3->get('api')->projects();
-
-    	// get key count
-        for ($index = 0 ; $index < count($projects); $index++) {
-            $count = $f3->get('api')->keys_count($projects[$index]['id']);
-            $projects[$index]['count'] = $count;
-        }
-
-        echo $f3->get('template')->render('template.html', 'text/html', array('projects' => $projects, 'content' => 'projects.html', 'js' => array('js/masonry.min.js', 'js/projects.js')));
+        echo $f3->get('template')->render('template.html', 'text/html', array('content' => 'projects.html', 'js' => array('js/masonry.min.js', 'js/projects.js')));
     }
 );
 
