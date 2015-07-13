@@ -8,15 +8,15 @@ $f3->config('globals.ini');
 // include config
 require("config.php");
 
+// read routes
+$f3->config('routes.ini');
+
 // home page
 $f3->route('GET /',
     function() {
         echo 'Hello, world!';
     }
 );
-
-// sets keys
-$f3->route('POST @key_set: /keys/set', 'Keys->Set');
 
 // check if a key exists
 $f3->route('GET @key_exists: /keys/@project_id/@key/exists', 'Keys->Exists');
