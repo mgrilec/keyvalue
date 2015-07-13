@@ -20,11 +20,12 @@ var api = (function($) {
 		);
 	};
 
-	api.project_create = function(project_title, project_description, success, fail) {
+	api.project_create = function(project_title, project_description, project_color, success, fail) {
 		return post('projects/create', { 
 			project: { 
 				title: project_title, 
-				description: project_description 
+				description: project_description,
+				color: project_color
 			}
 		}, function(data) { success(data.result); },
 		function(error) { fail(error); });
@@ -58,6 +59,14 @@ var api = (function($) {
 			function(data) { success(data.result); },
 			function(error) { fail(error); });
 	};
+
+	api.keys_set = function(project_id, keys, values, success) {
+		return post('keys/set', { project: { id: project_id }, keys: keys, values: values }, function(data) { success(data.result); });
+	}
+
+	api.keys_delete = function(project_id, keys, success) {
+		return post('keys/delete', { project: {id: project_id }, keys: keys}, function(data) { success(data.result); });
+	}
 
 	return api;
 })(jQuery);

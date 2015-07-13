@@ -67,6 +67,15 @@ $(document).ready(function(){
 			});
 	});
 
+    // colors for projects
+    var colors = [
+    	'deep-purple darken-3',
+    	'indigo darken-3',
+    	'indigo darken-2',
+    	'blue darken-4',
+    	'cyan darken-3'
+    ];
+
 	// create new project
 	$('#create').submit(function(e) {
 		var formData = $(this).serializeArray();
@@ -75,7 +84,8 @@ $(document).ready(function(){
 			data[item.name] = item.value;
 		});
 
-		api.project_create(data['project_title'], data['project_create'], function(id) {
+		var color = colors[Math.floor(Math.random() * colors.length)];
+		api.project_create(data['project_title'], data['project_description'], color, function(id) {
 
 			// add a project card
 			async.parallel({
