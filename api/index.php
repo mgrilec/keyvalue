@@ -1,6 +1,6 @@
 <?php
 
-$f3 = require("include/fatfree/lib/base.php");
+$f3 = require("fatfree/lib/base.php");
 
 // read globals
 $f3->config('globals.ini');
