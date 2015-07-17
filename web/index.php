@@ -5,7 +5,10 @@ $f3 = require('fatfree/lib/base.php');
 // set debug level
 $f3->set('DEBUG',3);
 
-$f3->set('api', new Api('../api/'));
+$f3->set('AUTOLOAD','include/');
+
+$api_url = phpUri::parse($f3->get('SCHEME') . '://' . $f3->get('HOST') . $f3->get('BASE'))->join('./api');
+$f3->set('api', new Api($api_url));
 $f3->set('UI', './templates/');
 $f3->set('template', Template::instance());
 
