@@ -18,9 +18,6 @@ $f3->route('GET /',
     }
 );
 
-// check if a key exists
-$f3->route('GET @key_exists: /keys/@project_id/@key/exists', 'Keys->Exists');
-
 // get key count
 $f3->route('GET @key_count: /keys/@project_id/count', 'Keys->Count');
 
