@@ -7,6 +7,9 @@ function optimus_encode($f3, $id)
 	return $f3->get('optimus')->encode(hexdec(explode('.', $id)[0])); 
 }
 
+// hashids
+$f3->set('hashids', new Hashids\Hashids("Tb3xRxkE"));
+
 // database
 $db = new DB\Jig ('db/');
 $f3->set('project', new DB\Jig\Mapper($db, 'projects'));

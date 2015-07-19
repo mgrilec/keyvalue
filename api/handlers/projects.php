@@ -6,7 +6,7 @@ class Projects {
 	}
 
 	public static function ValidateProjectId($id) {
-		return array('result' => ctype_digit($id) || is_int($id), 'error' => "Invalid project ID");
+		return array('result' => strlen($id) > 0, 'error' => "Invalid project ID");
 	}
 
 	public static function Create($f3, $params) {
@@ -28,8 +28,8 @@ class Projects {
 		$projectMapper->description = $f3->get('REQUEST.project.description');
 		$projectMapper->color = $f3->get('REQUEST.project.color');
 		$projectMapper->save();
-		
-		$projectMapper->id = optimus_encode($f3, $projectMapper->_id);
+
+		$projectMapper->id = $f3->get("hashids")->encode_uniqid($projectMapper->_id);
 		$projectMapper->save();
 
 		// get data
