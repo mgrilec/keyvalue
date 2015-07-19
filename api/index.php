@@ -13,8 +13,13 @@ $f3->config('routes.ini');
 
 // home page
 $f3->route('GET /',
-    function() {
-        echo 'Hello, world!';
+    function($f3) {
+        $data = array(
+        	'version' => $f3->get('version'),
+        	'build' => $f3->get('build')
+        );
+
+        echo json_encode($data);
     }
 );
 
