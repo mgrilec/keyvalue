@@ -1,6 +1,6 @@
 <?php
 
-$f3 = require("include/fatfree/lib/base.php");
+$f3 = require("fatfree/lib/base.php");
 
 // read globals
 $f3->config('globals.ini');
@@ -17,9 +17,6 @@ $f3->route('GET /',
         echo 'Hello, world!';
     }
 );
-
-// check if a key exists
-$f3->route('GET @key_exists: /keys/@project_id/@key/exists', 'Keys->Exists');
 
 // get key count
 $f3->route('GET @key_count: /keys/@project_id/count', 'Keys->Count');

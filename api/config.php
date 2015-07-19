@@ -1,12 +1,7 @@
 <?php
 
-// optimus
-require("include/optimus.php");
-$f3->set('optimus', new Optimus(14278211, 48684651, 1792568627));
-function optimus_encode($f3, $id) 
-{
-	return $f3->get('optimus')->encode(hexdec(explode('.', $id)[0])); 
-}
+// hashids
+$f3->set('hashids', new Hashids("Tb3xRxkE"));
 
 // database
 $db = new DB\Jig ('db/');

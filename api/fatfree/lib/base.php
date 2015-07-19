@@ -98,7 +98,7 @@ final class Base extends Prefab implements ArrayAccess {
 		//! HTTP verbs
 		VERBS='GET|HEAD|POST|PUT|PATCH|DELETE|CONNECT',
 		//! Default directory permissions
-		MODE=0755,
+		MODE=0775,
 		//! Syntax highlighting stylesheet
 		CSS='code.css';
 
