@@ -11,8 +11,6 @@
 	
 */
 
-namespace Hashids;
-
 /**
  * HashGenerator is a contract for generating hashes
  */

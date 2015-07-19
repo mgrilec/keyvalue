@@ -1,7 +1,7 @@
 <?php
 
 // hashids
-$f3->set('hashids', new Hashids\Hashids("Tb3xRxkE"));
+$f3->set('hashids', new Hashids("Tb3xRxkE"));
 
 // database
 $db = new DB\Jig ('db/');

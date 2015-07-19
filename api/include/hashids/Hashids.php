@@ -11,8 +11,6 @@
 	
 */
 
-namespace Hashids;
-
 class Hashids implements HashGenerator {
 	
 	const VERSION = '1.0.5';
