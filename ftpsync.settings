@@ -9,7 +9,7 @@
 		"password": null,
 		"path": "/var/www/keyvalue",
 
-		"upload_on_save": true, // set *false* if you do not want to upload on save!
+		// "upload_on_save": true, // set *false* if you do not want to upload on save!
 
 		// "port": 21,
 		// "tls": false,
