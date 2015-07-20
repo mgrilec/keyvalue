@@ -46,7 +46,7 @@ $f3->route('GET /test',
 
 		// display results
 		$template = new Template;
-		echo $template->render('ui/material-tests.html');
+		echo $template->render('ui/tests.html');
 
 		// cleanup
 		$f3->clear('results');

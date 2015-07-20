@@ -206,3 +206,11 @@ html, body {
 .mdl-demo .mdl-menu__container {
   z-index: 99;
 }
+
+.kv-test-table {
+  width: 100%;
+}
+
+.kv-test-child {
+  line-height: 24px;
+}
