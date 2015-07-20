@@ -12,15 +12,21 @@ $f3->set('api', new Api($api_url));
 $f3->set('UI', './templates/');
 $f3->set('template', Template::instance());
 
+$f3->route('GET /', 
+    function($f3, $params) {
+        
+        echo $f3->get('template')->render('template.html', 'text/html', array('content' => 'projects.html', 'js' => array('js/masonry.min.js', 'js/projects.js')));
+    }
+);
 
-$f3->route('GET /',
+$f3->route('GET /projects',
     function($f3, $params) {
 
         echo $f3->get('template')->render('template.html', 'text/html', array('content' => 'projects.html', 'js' => array('js/masonry.min.js', 'js/projects.js')));
     }
 );
 
-$f3->route('POST /create', 
+$f3->route('POST /projects/create', 
 	function($f3, $params) {
 
 		// create new project
@@ -29,7 +35,7 @@ $f3->route('POST /create',
 	}
 );
 
-$f3->route('POST /update', 
+$f3->route('POST /projects/update', 
     function($f3, $params) {
 
         // update project
@@ -70,7 +76,7 @@ $f3->route('POST /update',
     }
 );
 
-$f3->route('GET /@project_id/delete',
+$f3->route('GET /projects/@project_id/delete',
 	function($f3, $params) {
 
 		// delete project
@@ -79,7 +85,7 @@ $f3->route('GET /@project_id/delete',
 	}
 );
 
-$f3->route('POST /@project_id/delete_key',
+$f3->route('POST /projects/@project_id/delete_key',
     function($f3, $params) {
 
         $keys = array();
@@ -92,7 +98,7 @@ $f3->route('POST /@project_id/delete_key',
     }
 );
 
-$f3->route('POST /@project_id/add_key',
+$f3->route('POST /projects/@project_id/add_key',
     function($f3, $params) {
 
         $f3->get('api')->keys_set($params['project_id'], $f3->get('REQUEST.keys'), $f3->get('REQUEST.values'));
@@ -100,7 +106,7 @@ $f3->route('POST /@project_id/add_key',
     }
 );
 
-$f3->route('GET /@project_id',
+$f3->route('GET /projects/@project_id',
     function($f3, $params) {
 
     	// get project
