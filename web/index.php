@@ -14,8 +14,8 @@ $f3->set('template', Template::instance());
 
 $f3->route('GET /', 
     function($f3, $params) {
-        
-        echo $f3->get('template')->render('template.html', 'text/html', array('content' => 'projects.html', 'js' => array('js/masonry.min.js', 'js/projects.js')));
+
+        echo $f3->get('template')->render('template.html', 'text/html', array('content' => 'home.html', 'js' => array('js/masonry.min.js', 'js/projects.js')));
     }
 );
 

@@ -6,10 +6,7 @@ $(document).ready(function(){
     });
 
     // modal
-    $('.modal-trigger').leanModal();
-
-    // side nav?
-    $('.button-collapse').sideNav();
+    $('#create-project-button').leanModal();
 
     var add = function(card) {
 		// on delete
